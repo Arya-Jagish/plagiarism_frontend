@@ -1,0 +1,361 @@
+/* mains.css */
+
+
+/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap'); */
+body {
+    /* overflow: hidden; */
+    background-color: #ccc;
+    /* overflow: hidden;  */
+}
+
+@media screen and (max-width: 768px) {
+    body {
+        overflow: auto;
+    }
+}
+/* Adjust styles for the container */
+.container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;  
+}
+
+ .column1 {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .col-7 {
+            padding: 15px;
+            border-radius: 5px;
+        }
+        
+        /* Remove hover effect for col-7 */
+        .col-7:hover {
+            /* Remove the hover effect styles */
+            background-color: initial;
+            box-shadow: initial;
+            transform: initial;
+        }
+
+.column1-button {
+            margin-right: 1cm;
+        }
+
+.form_textarea {
+            width: calc(100% - 40px); /* Adjusting width considering padding */
+        }
+/* Adjust styles for the columns */
+.column {
+    flex: 1;
+    padding: 10px;
+    /* border: 1px solid #ccc; */
+}
+
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-5px); /* Move the card slightly up on hover */
+    box-shadow: 0 8px 16px #575656;; /* Add a shadow on hover */
+}
+.column3{
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+
+}
+#column3 {
+    position: relative;
+    padding: 15px;
+}
+
+/* Pseudo-element for the vertical line */
+#column3::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 1px; /* Width of the line */
+    background-color: #ddd; /* Light shade color */
+}   
+.column2-button{
+    padding: 8px 12px;
+    background-color: #4d4e4e;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 10px;
+
+}
+/* Style for the button in the first column */
+.column1-button {
+    padding: 8px 12px;
+    background-color: #5c5d5e;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    margin-bottom: 10px;
+
+}
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+/* Style for the textarea in the first column */
+.form_textarea {
+    width: 100%;
+    min-height: 200px; /* Set a fixed minimum height */
+    max-height: 200px;
+    padding: 8px;
+    resize: none;
+    font-family: 'Inter', sans-serif;
+    border-radius: 10px;
+}
+
+textarea {
+    overflow: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    border: 1px solid #ccc; /* Adding a border for visualization */
+    padding: 5px; /* Adding padding for better appearance */
+}
+
+/* Hide scrollbar for WebKit-based browsers */
+textarea::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide columns by default */
+.hidden {
+    display: none;
+}
+
+/* Style for rows within column 2 */
+.column2 .row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+
+}
+
+/* Style for labels in rows */
+.row-label {
+    width: 100px; /* Adjust width as needed */
+    text-align: right;
+    margin-right: 10px;
+}
+
+.col-1{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+.chart {
+    width: 100%; 
+    height: 300px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.progress{
+    height: 100px;
+}
+
+
+.card{
+    /* text-align: center; */
+    justify-content: center;
+    color: #333;
+    padding-top: 5px;
+    box-shadow: 2px 2px #626263;
+    
+}
+.first card.card{
+    justify-content: center;
+    color: #333;
+    padding-top: 5px;
+}
+
+input {
+    margin-top: 1rem;
+  }
+  
+  input::file-selector-button {
+    font-weight: bold;
+    color: rgba(140, 142, 145, 0.847);
+    padding: 0.5em;
+    border: thin solid grey;
+    border-radius: 3px;
+  }
+  .fileHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+
+/* First column screen size */
+@media screen and (max-width: 768px) {
+    .col-7 {
+        /* Adjust styles for smaller screens */
+        width: 100%;
+        padding: 10px; /* Adjust padding for smaller screens */
+    }
+
+    /* Additional adjustments for other elements if needed */
+    .form_textarea {
+        /* Adjust textarea width for smaller screens */
+        width: 100%;
+        min-height: 250px; /* Adjust the minimum height */
+    }
+
+    .column1-button {
+        /* Adjust button styles for smaller screens if needed */
+        margin-right: 5px;
+        font-size: 12px;
+    }
+
+}
+@media screen and (max-width: 768px) {
+    .col-md-3,
+    .col-md-4 {
+        width: 100%;
+    }
+}
+
+.card {
+    width: 300px;
+    height: 200px;
+    border: 1px solid #ccc;
+    position: relative;
+}
+
+.card-text{
+    height: 170px;
+    text-align: left;
+}
+
+  .chart-container {
+    width: 600px;
+    height: 400px;
+  }
+
+  .progress_bar_container {
+    width: 100%;
+  }
+
+  progress {
+    width: 100%;
+    height: 10px; /* Adjust height as needed */
+    border: none;
+    background-color: #f5f5f5;
+    border-radius: 20px;
+    appearance: none;
+    /* transition: width 0.5s ease-in-out; */
+  }
+  .card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    /* padding: 15px; */
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  #percentage-text {
+    font-size: 18px;
+    /* color: #007bff; */
+  }
+
+  #domains-container,
+  #urls-container {
+    font-size: 16px;
+    /* color: #333; */
+    border-radius: 15px;
+    width: fit-content;
+  }
+
+  .card.border-0.mb-3 {
+    width: -webkit-fill-available;
+}
+
+.card.border-0 {
+    width: -webkit-fill-available;
+}
+
+  #progress {
+    width: 100%;
+    box-sizing: border-box;
+    background-image: linear-gradient(45deg,#08d9d6 16.67%,#252a34 16.67%,#252a34 33.33%,#ff2e63 33.33%,
+    #ff2e63 50%,#08d9d6 50%,#08d9d6 66.67%,#252a34 66.67%,#252a34 83.33%, #ff2e63 83.33% #ff2e63 100%);
+
+    font-family: consolas;
+    font-size: 25px;
+    font-family: 600;
+    color: #fff;
+    letter-spacing: center;
+  }
+
+  .progress-bar-container {
+    margin-bottom: 10px;
+  }
+
+  .progress_bar_container {
+    margin-top: 15px;
+  }
+  .card-container {
+    display: flex;
+    width: 100%;
+    /* flex-wrap: wrap;  */
+    gap: 10px; /* Adjust the gap between cards as needed */
+  }
+  #myChart {
+    width: 100px;
+    height: 100px;
+}
+.animated-number {
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    opacity: 1;
+    transform: scale(1);
+}
+/* Overlay Styles */
+.overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+/* Spinner Styles */
+.spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top: 4px solid #ffffff;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

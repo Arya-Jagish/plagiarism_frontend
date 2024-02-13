@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter&display=swap">
+    <link rel="stylesheet" href="mains.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> -->
+    
+</head>
+<body class="p-3">
+    
+    <div class="row">
+        <!-- First Column -->
+        <div class=" col-sm-12 col-md-7">
+            <div class="fileHeader">
+                <div class="row justify-content-start">
+                    <div class="mb-2">
+                        <span id="fileNameDisplay">Upload a file</span>
+                    </div>
+        <div>
+            <label for="avatar" id="chooseLabel" class="column1-button">Choose</label>
+            <input id="avatar" type="file" name="avatar" accept=".txt" style="display: none;" />
+        </div>
+        <div id="fileNameSection" style="display: none;">
+            <button id="deleteFileButton" class="column1-button">Delete</button>
+        </div>
+        </div>
+            <div class="fileButton d-flex justify-content-between">
+                <button id="toggleAndConvert" class="column1-button" >CHECK</button>
+            </div>
+                
+            </div>
+            
+            <textarea id="userTextArea" class="form_textarea" name="userText" spellcheck="false" 
+            placeholder="Enter text or upload file to check for Plagiarism and writing errors" 
+            style="width: 100%; min-height: 550px; border: none;outline: none; resize: none;"></textarea>
+
+            <div class="btn-group" role="group" aria-label="Basic outlined example">
+                <button type="button" onclick="applyStyle('bold')" class="btn btn-outline-primary border-0">Bold</button>
+                <button type="button" onclick="applyStyle('italic')"class="btn btn-outline-primary border-0">Italics</button>
+                <button type="button" onclick="applyStyle('underline')"class="btn btn-outline-primary border-0">Underlined</button>
+                <button type="button" class="btn btn-outline-primary border-0">H1</button>
+                <button type="button" class="btn btn-outline-primary border-0">H2</button>
+                <button type="button" class="btn btn-outline-primary border-0">157 words</button>
+
+            </div>
+            <br> 
+        </div>
+        <!-- First column ends -->
+
+        <!-- Second Column begins-->
+        <div class="col-3 " id="column2">
+            <h5 class="card-title text-center mt-3 mb-4" ><h6><b><center>Suggestions</center></b></h6>  <br>
+            <!-- Content for column 2 goes here -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <!-- <a href="#" class="card-link">Card link</a>
+                    <a href="#" class="card-link">Another link</a> -->
+                </div>
+            </div>
+            <br>
+            <div class="card" >
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <!-- <a href="#" class="card-link">Card link</a>
+                    <a href="#" class="card-link">Another link</a> -->
+                </div>
+            </div>
+        </div>
+        <!-- Second Column ends -->  
+
+        <!-- Third column begins -->
+        <div class="col" id="column3" style="border: 0px solid #ccc; padding: 15px;">
+            <h5 class="card-title text-center mt-3 mb-4" ><h6><b><center>Overview</center></b></h6>  <br>
+            <div class="w3-border">
+                <div class="w3-grey" style="height:24px;width:20%"></div>
+            </div>
+
+            <div class="first-card" >
+                <div class="card shadow-none">
+                    <div class="card-body">
+                      This is some text within a card body.
+                    </div>
+                  </div>
+            </div> <br>
+
+            <div class="first-card" >
+                <div class="card shadow-none">
+                    <div class="card-body">
+                      This is some text within a card body.
+                    </div>
+                  </div>
+            </div> <br>
+
+            <div class="first-card" >
+                <div class="card shadow-none">
+                    <div class="card-body">
+                      This is some text within a card body.
+                    </div>
+                  </div>
+            </div> <br> <br>
+            
+            <!-- <div class="chart" >
+                <canvas id="myChart" ></canvas>
+            </div> -->
+
+              <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar bg-success" style="width: 25%"></div> 
+              </div> <br>
+              <div class="progress" role="progressbar" aria-label="Info example" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar bg-info" style="width: 50%"></div>
+              </div> <br>
+              <div class="progress" role="progressbar" aria-label="Warning example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar bg-warning" style="width: 75%"></div>
+              </div> <br>
+              <div class="progress" role="progressbar" aria-label="Danger example" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar bg-danger" style="width: 100%"></div>
+              </div> <br>
+            
+        </div> 
+        <!-- Third column ends -->
+    </div>
+                            
+    <script>
+        const fileInput = document.getElementById('avatar');
+        const chooseLabel = document.getElementById('chooseLabel');
+        const fileNameSection = document.getElementById('fileNameSection');
+        const fileNameDisplay = document.getElementById('fileNameDisplay');
+        const deleteFileButton = document.getElementById('deleteFileButton');
+        const toggleAndConvertButton = document.getElementById('toggleAndConvert');
+    
+        fileInput.addEventListener('change', function() {
+            const selectedFile = this.files[0];
+            if (selectedFile) {
+                chooseLabel.style.display = 'none'; // Hide the 'Choose' label
+                fileNameSection.style.display = 'inline-block'; // Display the file name section
+                fileNameDisplay.textContent = selectedFile.name;
+                toggleAndConvertButton.disabled = false; // Enable the CHECK button
+            }
+        });
+    
+        deleteFileButton.addEventListener('click', function() {
+            fileInput.value = ''; // Clear the selected file
+            fileNameDisplay.textContent = '';
+            fileNameSection.style.display = 'none'; // Hide the file name section
+            chooseLabel.style.display = 'inline-block'; // Show the 'Choose' label again
+            toggleAndConvertButton.disabled = true; // Disable the CHECK button
+        });
+    </script>
+
+    <script>
+        document.getElementById('avatar').addEventListener('change', function() {
+            const file = this.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(event) {
+                const contents = event.target.result;
+                document.getElementById('userTextArea').value = contents;
+            };
+
+            reader.readAsText(file);
+        });
+    </script>
+
+    <script>
+        function applyStyle(style) {
+        const textarea = document.getElementById('userTextArea');
+        textarea.focus();
+        const selection = document.getSelection();
+        if (selection.rangeCount > 0) {
+        const range = selection.getRangeAt(0);
+        const span = document.createElement('span');
+        span.style[style] = (range.style[style] !== 'undefined' && range.style[style] !== 'normal') ? 'normal' : 'inherit';
+        range.surroundContents(span);
+    }
+}
+
+    </script>
+
+    <script>
+    document.getElementById('toggleAndConvert').addEventListener('click', function() {
+        toggleAndConvert(); // Call the combined function
+    });
+
+    function toggleAndConvert() {
+        // Toggle visibility of columns
+        var col2 = document.getElementById('column2');
+        var col3 = document.getElementById('column3');
+        col2.classList.toggle('hidden');
+        col3.classList.toggle('hidden');
+
+        // Convert text
+        // const textarea = document.getElementById('userTextArea');
+        // const text = textarea.value;
+        // const paragraphs = text.split('\n');
+        // const newText = paragraphs.filter(para => para.trim() !== '').join('');
+        // textarea.value = newText;
+    }
+    </script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    
+</body>
+</html>

@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter&display=swap"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="mains.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+
+  </head>
+  <body class="p-3" style="background-color: rgb(251, 248, 248);">
+    <div class="row">
+      <!-- First Column -->
+      <div class="col-sm-12 col-md-5">
+        <div class="fileHeader">
+          <div class="row justify-content-start">
+            <div class="mb-2">
+              <span id="fileNameDisplay">Upload a file</span>
+            </div>
+            <div>
+              <label for="avatar" id="chooseLabel" class="column1-button"
+                >Choose</label
+              >
+              <input
+                id="avatar"
+                type="file"
+                name="avatar"
+                accept=".txt"
+                style="display: none"
+              />
+            </div>
+            <div id="fileNameSection" style="display: none">
+              <button id="deleteFileButton" class="column1-button">
+                Delete
+              </button>
+            </div>
+          </div>
+
+          <div class="fileButton d-flex justify-content-between">
+            <button
+              id="toggleAndConvert"
+              class="column1-button"
+              onclick="postData()"
+            >
+              CHECK
+            </button>
+          </div>
+        </div>
+
+        <form id="postDataForm">
+          <label for="userTextArea"></label>
+          <textarea
+            id="userTextArea"
+            class="form_textarea"
+            name="userText"
+            spellcheck="false"
+            placeholder="Enter text or upload file to check for Plagiarism and writing errors"
+            style="
+              width: 100%;
+              min-height: 550px;
+              border: none;
+              outline: none;
+              resize: none;
+            "
+          ></textarea>
+        </form>
+
+        <div class="btn-group" role="group" aria-label="Basic outlined example" id="bold">
+          <button
+            type="button"
+            id="button_bold"
+            onclick="applyStyle('bold')"
+            class="btn btn-outline-primary border-0"
+          >
+            Bold
+          </button>
+          <button
+            type="button"
+            id="button_italics"
+            onclick="applyStyle('italic')"
+            class="btn btn-outline-primary border-0"
+          >
+            Italics
+          </button>
+          <button
+            type="button"
+            id="button_underline"
+            onclick="applyStyle('underline')"
+            class="btn btn-outline-primary border-0"
+          >
+            Underlined
+          </button>
+          <button type="button" class="btn btn-outline-primary border-0" id="button_H1">
+            H1
+          </button>
+          <button type="button" class="btn btn-outline-primary border-0" id="button_H2">
+            H2
+          </button>
+          <!-- <button type="button" class="btn btn-outline-primary border-0">
+            157 words
+          </button> -->
+        </div>
+        <br />
+      </div>
+      <!-- First column ends -->
+
+      <!-- Second Column begins-->
+      <div class="col-md-3" id="column2">
+        <!-- Content for column 2 goes here -->
+
+        <h5 class="card-title text-center mt-3 mb-4">
+          <b><center>Suggestions</center></b>
+        </h5>
+        <!-- Add this div where you want to display the response -->
+
+        <div class="text-center">
+          <img
+            src="stu_board-removebg-preview.png"
+            class="img-fluid"
+            alt="Student Board Image"
+          />
+          <p><b>Nothing to check yet</b></p>
+          <p>
+            Start writing or upload a document<br />
+            to see necessary feedbacks
+          </p>
+        </div>
+
+        <div id="urls-container"></div>
+        <br />
+        <div id="domains-container"></div>
+
+        
+
+      </div>
+      <!-- Second Column ends -->
+
+      <!-- Third Column begins -->
+    <div class="col-md-4" id="column3" style="border: 0px solid #ccc; padding: 15px;">
+    <h5 class="card-title text-center mt-3 mb-4"><h6><b><center>Overview</center></b></h6><br>
+
+    <div class="card mx-auto" style="max-width: 300px;">
+        <div class="card-header">
+            Plagiarism Percentage
+        </div>
+        <div class="card-body">
+            <!-- <h5 class="card-title">Let's Check</h5> -->
+          <div class="plagiarism-percentage" id="percentage-text"></div>
+            <div class="progress-bar-container">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" id="plagiarism-progress"></div>
+                </div>
+            </div>  
+        </div>
+
+        <div class="card-group">
+          <div class="card">
+              <div class="card-body">
+                  <h6 class="card-title">Total Words<br><br><span id="word-count" class="animated-number">0</span></h6>
+              </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+                <h6 class="card-title">Matched words<br><br><span id="char-count" class="animated-number">0</span></h6>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <h6 class="card-title">Domain Count<br><br><span id="domains-count" class="animated-number">0</span></h6>
+            </div>
+          </div>
+        </div>
+  </div>
+
+<br><br>
+
+<div style="width: 100%; display: flex; justify-content: center; align-items: center;">
+  <div style="width: 300px; height: 300px;">
+      <canvas id="myChart"></canvas>
+  </div>
+</div>
+
+</div>
+<!-- Third Column ends -->
+
+  </div>
+
+    <script>
+      const fileInput = document.getElementById("avatar");
+      const chooseLabel = document.getElementById("chooseLabel");
+      const fileNameSection = document.getElementById("fileNameSection");
+      const fileNameDisplay = document.getElementById("fileNameDisplay");
+      const deleteFileButton = document.getElementById("deleteFileButton");
+      const toggleAndConvertButton =
+        document.getElementById("toggleAndConvert");
+
+      fileInput.addEventListener("change", function () {
+        const selectedFile = this.files[0];
+        if (selectedFile) {
+          chooseLabel.style.display = "none";
+          fileNameSection.style.display = "inline-block";
+          fileNameDisplay.textContent = selectedFile.name;
+          toggleAndConvertButton.disabled = false;
+        }
+      });
+
+      deleteFileButton.addEventListener("click", function () {
+        fileInput.value = "";
+        fileNameDisplay.textContent = "";
+        fileNameSection.style.display = "none";
+        chooseLabel.style.display = "inline-block";
+        toggleAndConvertButton.disabled = true;
+      });
+    </script>
+
+    <script>
+      document.getElementById("avatar").addEventListener("change", function () {
+        const file = this.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function (event) {
+          const contents = event.target.result;
+          document.getElementById("userTextArea").value = contents;
+        };
+
+        reader.readAsText(file);
+      });
+    </script>
+
+    <script>
+      function applyStyle(style) {
+        const textarea = document.getElementById("userTextArea");
+        textarea.focus();
+        const selection = document.getSelection();
+        if (selection.rangeCount > 0) {
+          const range = selection.getRangeAt(0);
+          const span = document.createElement("span");
+          span.style[style] =
+            range.style[style] !== "undefined" &&
+            range.style[style] !== "normal"
+              ? "normal"
+              : "inherit";
+          range.surroundContents(span);
+        }
+      }
+    </script>
+
+<script>
+  // Function to update the Chart.js doughnut chart based on domain data
+  function updateChart(domains) {
+    const domainNames = domains.map(domain => domain);
+    const domainsCount = domains.length;
+    print(domainNames);
+
+    const data = {
+      labels: domainNames,
+      datasets: [{
+        label: 'Domain Distribution',
+        data: Array(domainsCount).fill(1), // Filling with dummy data for doughnut chart
+        backgroundColor: [
+          'rgb(255, 99, 132)',
+          'rgb(54, 162, 235)',
+          'rgb(255, 205, 86)',
+          // Add more colors as needed
+        ],
+        hoverOffset: 4
+      }]
+    };
+
+    const config = {
+      type: 'doughnut',
+      data: data,
+    };
+
+    // Get the canvas context and update the chart
+    var ctx = document.getElementById('myChart').getContext('2d');
+    
+    var myChart = new Chart(ctx, config);
+  }
+
+  document.getElementById("toggleAndConvert").addEventListener("click", function () {
+    postData();
+  });
+
+  async function postData() {
+    const text = document.getElementById("userTextArea").value;
+
+    const data = {
+      text: text,
+    };
+
+    try {
+      // Simulating the response from the API
+      const response = {
+        query: "npm is a package manager for the JavaScript programming language...",
+        domains: ["upload.wikimedia.org", "en.wikipedia.org"],
+        urls: [
+          "https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Npm-logo.svg/1200px-Npm-logo.svg.png?sa=X&ved=2ahUKEwjf9IHvmvCDAxW12TgGHWTcATUQ_B16BAgBEAI",
+          "https://en.wikipedia.org/wiki/Npm",
+        ],
+        corpus_data: "\n npm is a package manager for the JavaScript programming language maintained by npm, Inc. npm is the default package manager for the JavaScript runtime environment Node.js...",
+        plag_percent: 85.07916732591792,
+      };
+
+      // Use the response as needed in your application logic
+      console.log("Post Response:", response);
+
+      // Update the card content
+      updateCard(response);
+
+      // Update the chart with the domains data
+      updateChart(response.domains);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
+  function updateCard(response) {
+    const percentageText = document.getElementById('percentage-text');
+    const progressBar = document.getElementById('plagiarism-progress');
+    let circle_percent = document.getElementById('progress');
+
+    if (percentageText) {
+        const plagiarismPercentage = response.plag_percent.toFixed(2);
+        percentageText.innerText = `Plagiarism Percentage: ${plagiarismPercentage}%`;
+
+        if (progressBar) {
+            progressBar.style.width = `${response.plag_percent}%`;
+        }
+
+        if (circle_percent) {
+            circle_percent.setAttribute("value", response.plag_percent);
+        }
+    }
+
+    const suggestionsContainer = document.getElementById('column2');
+
+    if (suggestionsContainer) {
+        suggestionsContainer.innerHTML = `
+            <h5 class="card-title text-center mt-3 mb-4">
+                <b><center>Suggestions</center></b>
+            </h5>
+            <div class="card border-0 mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">URLs</h5>
+                    <div id="urls-container-card">
+                        ${createLinks(response.urls)}
+                    </div>
+                </div>
+            </div>
+            <div class="card border-0">
+                <div class="card-body">
+                    <h5 class="card-title">Domains</h5>
+                    <div id="domains-container-card">
+                        ${createDomains(response.domains)}
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+     // Count the number of domains
+    const domainsCount = response.domains.length;
+    const domainsCountElement = document.getElementById('domains-count');
+
+    if (domainsCountElement) {
+        domainsCountElement.innerText = `${domainsCount}`;
+    }
+}
+
+function createLinks(items) {
+    const listItems = items.map(item => `<li><a href="${item}" target="_blank" style="text-decoration: none;">${item}</a></li>`).join('\n');
+    return `<ul style="list-style-type: disc; padding-left: 20px;">${listItems}</ul>`;
+}
+
+function createDomains(items) {
+    const domainItems = items.map(item => `<li>${item.domain}</li>`);
+    return `<ul>${domainItems.join('')}</ul>`;
+}
+</script>
+
+
+    <!-- <script>
+  document
+    .getElementById("toggleAndConvert")
+    .addEventListener("click", function () {
+      postData(); // Call the combined function
+    });
+
+  async function postData() {
+    const text = document.getElementById("userTextArea").value;
+
+    const data = {
+      text: text,
+    };
+
+    try {
+      // Simulating the response from the API
+      const response = {
+        query:
+          "npm is a package manager for the JavaScript programming language...",
+        domains: ["upload.wikimedia.org", "en.wikipedia.org"],
+        urls: [
+          "https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Npm-logo.svg/1200px-Npm-logo.svg.png?sa=X&ved=2ahUKEwjf9IHvmvCDAxW12TgGHWTcATUQ_B16BAgBEAI",
+          "https://en.wikipedia.org/wiki/Npm",
+        ],
+        corpus_data:
+          "\n npm is a package manager for the JavaScript programming language maintained by npm, Inc. npm is the default package manager for the JavaScript runtime environment Node.js...",
+        plag_percent: 85.07916732591792,
+      };
+
+      // Use the response as needed in your application logic
+      console.log("Post Response:", response);
+
+      // Update the card content
+      updateCard(response);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
+  function updateCard(response) {
+    const percentageText = document.getElementById('percentage-text');
+    const progressBar = document.getElementById('plagiarism-progress');
+    let circle_percent = document.getElementById('progress');
+
+    if (percentageText) {
+        const plagiarismPercentage = response.plag_percent.toFixed(2);
+        percentageText.innerText = `Plagiarism Percentage: ${plagiarismPercentage}%`;
+
+        if (progressBar) {
+            progressBar.style.width = `${response.plag_percent}%`;
+        }
+
+        if (circle_percent) {
+            circle_percent.setAttribute("value", response.plag_percent);
+        }
+    }
+
+    const suggestionsContainer = document.getElementById('column2');
+
+    if (suggestionsContainer) {
+        suggestionsContainer.innerHTML = `
+            <h5 class="card-title text-center mt-3 mb-4">
+                <b><center>Suggestions</center></b>
+            </h5>
+            <div class="card border-0 mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">URLs</h5>
+                    <div id="urls-container-card">
+                        ${createLinks(response.urls)}
+                    </div>
+                </div>
+            </div>
+            <div class="card border-0">
+                <div class="card-body">
+                    <h5 class="card-title">Domains</h5>
+                    <div id="domains-container-card">
+                        ${createDomains(response.domains)}
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+     // Count the number of domains
+    const domainsCount = response.domains.length;
+    const domainsCountElement = document.getElementById('domains-count');
+
+    if (domainsCountElement) {
+        domainsCountElement.innerText = `${domainsCount}`;
+    }
+}
+
+function createLinks(items) {
+    const listItems = items.map(item => `<li><a href="${item}" target="_blank" style="text-decoration: none;">${item}</a></li>`).join('\n');
+    return `<ul style="list-style-type: disc; padding-left: 20px;">${listItems}</ul>`;
+}
+
+function createDomains(items) {
+    const domainItems = items.map(item => `<li>${item.domain}</li>`);
+    return `<ul>${domainItems.join('')}</ul>`;
+}
+    </script> -->
+      
+  <!-- <script>
+        // Assuming you have the domains count and names available in JavaScript variables
+        const domainsCount = response.domains.length;
+        const domainNames = response.domains.map(domain => domain.name);
+    
+        const data = {
+            labels: domainNames,
+            datasets: [{
+                label: 'Domain Distribution',
+                data: [domainsCount], // Using domainsCount as the data
+                backgroundColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 205, 86)',
+                    // Add more colors as needed
+                ],
+                hoverOffset: 4
+            }]
+        };
+    
+        const config = {
+            type: 'doughnut',
+            data: data,
+        };
+    
+        window.onload = function() {
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myChart = new Chart(ctx, config);
+        };
+  </script> -->
+    
+
+    <script>
+// Select the textarea element
+const textarea = document.getElementById("userTextArea");
+
+// Select the span element where the word count will be displayed
+const wordCountSpan = document.getElementById("word-count");
+
+// Function to update the word count with animation
+function updateWordCount() {
+    // Get the text from the textarea
+    const text = textarea.value.trim();
+
+    // Count the number of words (splitting by spaces)
+    const wordCount = text.split(/\s+/).filter(word => word.length > 0).length;
+
+    // Apply animation class to the span element
+    wordCountSpan.classList.remove("animated-number");
+    void wordCountSpan.offsetWidth; // Trigger reflow to restart animation
+    wordCountSpan.classList.add("animated-number");
+
+    // Update the word count in the span element after a short delay
+    setTimeout(() => {
+        wordCountSpan.textContent = wordCount;
+    }, 1000); // Adjust the delay (in milliseconds) to match the CSS transition duration
+}
+
+// Listen for input events on the textarea
+textarea.addEventListener("input", updateWordCount);
+
+// Call the function initially to set the word count when the page loads
+updateWordCount();
+    </script>
+
+    <script>
+      // Function to capture console.log output and update HTML content
+      (function () {
+        var oldLog = console.log;
+        var consoleCardBody = document.getElementById("consoleCardBody");
+
+        console.log = function (message) {
+          // Call the original console.log
+          oldLog.apply(console, arguments);
+
+          // Update HTML content with console data
+          if (consoleCardBody) {
+            var newLogItem = document.createElement("p");
+            newLogItem.textContent = message;
+            consoleCardBody.appendChild(newLogItem);
+          }
+        };
+      })();
+    </script>
+
+    <script>
+var btn_bold = document.getElementById('button_bold');
+var para = document.getElementById('userTextArea');
+var btn_italics = document.getElementById('button_italics');
+var btn_underline = document.getElementById('button_underline');
+var btn_H1=document.getElementById('button_H1');
+var btn_H2=document.getElementById('button_H2');
+
+// Event listeners for button clicks
+btn_bold.addEventListener('click', function() {
+  para.style.fontWeight = 'bold';
+});
+
+btn_italics.addEventListener('click', function() {
+  para.style.fontStyle = 'italic';
+});
+
+btn_underline.addEventListener('click', function() {
+  para.style.textDecoration = 'underline'; // Use `textDecoration` for underlining
+});
+
+btn_H1.addEventListener('click', function() {
+  para.style.fontSize = '24px'; // 
+});
+
+btn_H2.addEventListener('click', function() {
+  para.style.fontSize = '36px'; //
+});
+
+    </script>
+
+<!-- <script>
+  function checkTextAreaLimit() {
+    var textarea = document.getElementById("userTextArea");
+    var maxLength = parseInt(textarea.getAttribute("maxlength"));
+    var currentLength = textarea.value.length;
+
+    if (currentLength > maxLength) {
+      alert("Text length exceeds the maximum limit of " + maxLength + " characters.");
+      // Optionally, you can trim the excess characters
+      textarea.value = textarea.value.slice(0, maxLength);
+    }
+  }
+</script>
+   -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script> -->
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<!-- <script src="https://cdn.rawgit.com/kottenator/jquery-circle-progress/1.2.2/dist/circle-progress.min.js" integrity="sha384-DvJ4N0fEnWtIc6ofkGFSzTF4E21n6qakpL48pXXJwzQ5t0pav4SN3FmJ0BBerqE9" crossorigin="anonymous"></script> -->
+
+</body>
+</html>
