@@ -276,9 +276,13 @@ input {
   }
 
   #percentage-text {
-    font-size: 18px;
-    /* color: #007bff; */
-  }
+    font-size: 30px;
+    color: #007bff;
+    font-weight: bold;
+    display: flex; /* Use flexbox */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+}
 
   #domains-container,
   #urls-container {
@@ -359,3 +363,22 @@ input {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+.container {
+    position: relative;
+  }
+  .container__textarea {
+    background: transparent;
+    position: relative;
+  }
+  .container__mirror {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    color: transparent;
+  }
+  .container__mark {
+    background-color: yellow;
+  }

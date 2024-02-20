@@ -200,25 +200,6 @@
   <div class="spinner"></div>
 </div>
   </div>
-
-  <!-- <script>
-    // Function to capture the entire HTML content of the screen and save it as a PDF
-    function captureScreenAsPDF() {
-        // Create a new instance of jsPDF
-        var doc = new jsPDF();
-        
-        // Add the HTML content of the entire screen to the PDF
-        doc.html(document.body, {
-            callback: function (doc) {
-                // Save the PDF with a filename
-                doc.save("report.pdf");
-            }
-        });
-    }
-    
-    // Add an event listener to trigger the PDF capture and download when the button is clicked
-    document.getElementById("downloadPdfButton").addEventListener("click", captureScreenAsPDF);
-    </script> -->
     
     <script>
         // Function to show the page loader
@@ -240,7 +221,7 @@
         // Call the function to hide the loader once the loading process is complete
         // This should be placed in the appropriate part of your code where the loading process is complete
         hidePageLoader();
-  </script>
+    </script>
 
     <script>
       const fileInput = document.getElementById("avatar");
@@ -388,7 +369,7 @@
         }
     }
 
-      function updateCard(response) {
+    function updateCard(response) {
         const percentageText = document.getElementById('percentage-text');
         const progressBar = document.getElementById('plagiarism-progress');
         let circle_percent = document.getElementById('progress');
@@ -548,174 +529,99 @@
     </script>
 
     <script>
-var btn_bold = document.getElementById('button_bold');
-var para = document.getElementById('userTextArea');
-var btn_italics = document.getElementById('button_italics');
-var btn_underline = document.getElementById('button_underline');
-var btn_H1=document.getElementById('button_H1');
-var btn_H2=document.getElementById('button_H2');
+        // Select the button element
+        const downloadPdfButton = document.getElementById("downloadPdfButton");
 
-// Event listeners for button clicks
-btn_bold.addEventListener('click', function() {
-  para.style.fontWeight = 'bold';
-});
-
-btn_italics.addEventListener('click', function() {
-  para.style.fontStyle = 'italic';
-});
-
-btn_underline.addEventListener('click', function() {
-  para.style.textDecoration = 'underline'; // Use `textDecoration` for underlining
-});
-
-btn_H1.addEventListener('click', function() {
-  para.style.fontSize = '24px'; // 
-});
-
-btn_H2.addEventListener('click', function() {
-  para.style.fontSize = '36px'; //
-});
-
-    </script>
-
-    <script>
-      // Select the button element
-      const downloadPdfButton = document.getElementById("downloadPdfButton");
-
-      // Function to check if the second and third columns are visible
-      function areColumnsVisible() {
-          const column2 = document.getElementById("column2");
-          const column3 = document.getElementById("column3");
-          return column2.style.display !== "none" && column3.style.display !== "none";
-      }
-
-      // Function to generate the report content and download the PDF
-      function downloadReportPdf() {
-          // Check if the columns are visible
-          if (!areColumnsVisible()) {
-              // If columns are not visible, return and do not generate PDF
-              alert("Please display the second and third columns to generate the PDF.");
-              return;
-          }
-
-          // Get the text from the textarea
-          const text = document.getElementById("userTextArea").value.trim();
-
-          // Get the plagiarism percentage
-          const plagiarismPercentage = document.getElementById("percentage-text").textContent;
-
-          // Get the chart canvas
-          const chartCanvas = document.getElementById("myChart");
-
-          // Get the corresponding text container
-          const correspondingTextContainer = document.getElementById("line-container-card");
-
-          // Create a div element to hold the content
-          const reportContent = document.createElement("div");
-
-          // Append the heading "Plagiarism Report" to the report content
-          const heading = document.createElement("h3");
-          heading.textContent = "Plagiarism Report";
-          heading.style.textAlign = "center";
-          reportContent.appendChild(heading);
-          reportContent.appendChild(document.createElement("br"));
-
-          // Append the text, domains, URLs, percentage, and chart image to the report content
-          reportContent.appendChild(document.createTextNode("Text:"));
-          reportContent.appendChild(document.createElement("br"));
-          reportContent.appendChild(document.createTextNode(text));
-          reportContent.appendChild(document.createElement("br"));
-          reportContent.appendChild(document.createElement("br"));
-
-          reportContent.appendChild(document.createTextNode("Domains:"));
-          reportContent.appendChild(document.createElement("br"));
-          reportContent.appendChild(document.getElementById("domains-container-card").cloneNode(true));
-          reportContent.appendChild(document.createElement("br"));
-          reportContent.appendChild(document.createElement("br"));
-
-          reportContent.appendChild(document.createTextNode("URLs:"));
-          reportContent.appendChild(document.createElement("br"));
-          reportContent.appendChild(document.getElementById("urls-container-card").cloneNode(true));
-          reportContent.appendChild(document.createElement("br"));
-          reportContent.appendChild(document.createElement("br"));
-
-          reportContent.appendChild(document.createTextNode("Plagiarism Percentage: " + plagiarismPercentage));
-          reportContent.appendChild(document.createElement("br"));
-          reportContent.appendChild(document.createElement("br"));
-
-          reportContent.appendChild(document.createTextNode("Corresponding Text:"));
-          reportContent.appendChild(document.createElement("br"));
-          reportContent.appendChild(correspondingTextContainer.cloneNode(true));
-          reportContent.appendChild(document.createElement("br"));
-          reportContent.appendChild(document.createElement("br"));
-
-
-          // Append the chart canvas to the report content
-          reportContent.appendChild(chartCanvas.cloneNode(true)); // Clone the canvas
-
-
-          // Define options for PDF generation
-          const options = {
-              margin: 10,
-              filename: 'report.pdf',
-              html2canvas: { scale: 2 },
-              jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-          };
-
-          // Use html2pdf library to generate PDF
-          html2pdf().from(reportContent).set(options).save();
-      }
-
-          // Add event listener for button click
-          downloadPdfButton.addEventListener("click", downloadReportPdf);
-
-    </script>
-
-
-<!-- <script>
-  // Create a function to capture the entire HTML content of the screen
-function captureScreenAsPDF() {
-    // Create a new instance of jsPDF
-    var doc = new jsPDF();
-    
-    // Add the HTML content of the entire screen to the PDF
-    doc.html(document.body, {
-        callback: function (doc) {
-            // Save the PDF with a filename
-            doc.save("screen_capture.pdf");
+        // Function to check if the second and third columns are visible
+        function areColumnsVisible() {
+            const column2 = document.getElementById("column2");
+            const column3 = document.getElementById("column3");
+            return column2.style.display !== "none" && column3.style.display !== "none";
         }
-    });
-}
 
-// Add an event listener to trigger the PDF capture and download
-document.getElementById("downloadPdfButton").addEventListener("click", function () {
-    // Check if jsPDF is defined
-    if (typeof jsPDF !== 'undefined') {
-        // Call the function to capture the screen as PDF
-        captureScreenAsPDF();
-    } else {
-        // jsPDF is not defined, display an error message or handle the situation accordingly
-        console.error('jsPDF library is not loaded.');
+        function downloadReportPdf() {
+        // Check if the columns are visible
+        if (!areColumnsVisible()) {
+            // If columns are not visible, return and do not generate PDF
+            alert("Please display the second and third columns to generate the PDF.");
+            return;
+        }
+
+        // Get the text from the textarea
+        const text = document.getElementById("userTextArea").value.trim();
+
+        // Get the plagiarism percentage
+        const plagiarismPercentage = document.getElementById("percentage-text").textContent;
+
+        // Get the chart canvas
+        const chartCanvas = document.getElementById("myChart");
+
+        // Get the corresponding text container
+        const correspondingTextContainer = document.getElementById("line-container-card");
+
+        // Create a div element to hold the content
+        const reportContent = document.createElement("div");
+
+        // Append the heading "Plagiarism Report" to the report content
+        const heading = document.createElement("h3");
+        heading.textContent = "Plagiarism Report";
+        heading.style.textAlign = "center";
+        reportContent.appendChild(heading);
+        reportContent.appendChild(document.createElement("br"));
+
+        // Append the text, domains, URLs, percentage, and chart image to the report content
+        reportContent.appendChild(document.createTextNode("Text:"));
+        reportContent.appendChild(document.createElement("br"));
+        const textElement = document.createElement("div");
+        textElement.style.lineHeight = "1.6"; // Adjust line height
+        textElement.style.fontSize = "12px"; // Adjust font size
+        textElement.textContent = text;
+        reportContent.appendChild(textElement);
+        reportContent.appendChild(document.createElement("br"));
+        reportContent.appendChild(document.createElement("br"));
+
+        reportContent.appendChild(document.createTextNode("Domains:"));
+        reportContent.appendChild(document.createElement("br"));
+        reportContent.appendChild(document.getElementById("domains-container-card").cloneNode(true));
+        reportContent.appendChild(document.createElement("br"));
+        reportContent.appendChild(document.createElement("br"));
+
+        reportContent.appendChild(document.createTextNode("URLs:"));
+        reportContent.appendChild(document.createElement("br"));
+        reportContent.appendChild(document.getElementById("urls-container-card").cloneNode(true));
+        reportContent.appendChild(document.createElement("br"));
+        reportContent.appendChild(document.createElement("br"));
+
+        reportContent.appendChild(document.createTextNode("Plagiarism Percentage: " + plagiarismPercentage));
+        reportContent.appendChild(document.createElement("br"));
+        reportContent.appendChild(document.createElement("br"));
+
+        reportContent.appendChild(document.createTextNode("Corresponding Text:"));
+        reportContent.appendChild(document.createElement("br"));
+        reportContent.appendChild(correspondingTextContainer.cloneNode(true));
+        reportContent.appendChild(document.createElement("br"));
+        reportContent.appendChild(document.createElement("br"));
+
+        // Append the chart canvas to the report content
+        reportContent.appendChild(chartCanvas.cloneNode(true)); // Clone the canvas
+
+        // Define options for PDF generation
+        const options = {
+            margin: 10,
+            filename: 'report.pdf',
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        // Use html2pdf library to generate PDF
+        html2pdf().from(reportContent).set(options).save();
     }
-});
 
-</script> -->
+        // Add event listener for button click
+        downloadPdfButton.addEventListener("click", downloadReportPdf);
 
+    </script>
 
-<!-- <script>
-  function checkTextAreaLimit() {
-    var textarea = document.getElementById("userTextArea");
-    var maxLength = parseInt(textarea.getAttribute("maxlength"));
-    var currentLength = textarea.value.length;
-
-    if (currentLength > maxLength) {
-      alert("Text length exceeds the maximum limit of " + maxLength + " characters.");
-      // Optionally, you can trim the excess characters
-      textarea.value = textarea.value.slice(0, maxLength);
-    }
-  }
-</script>
-   -->
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script> -->
