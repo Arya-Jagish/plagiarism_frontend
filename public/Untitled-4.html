@@ -557,7 +557,7 @@
         const chartCanvas = document.getElementById("myChart");
 
         // Get the corresponding text container
-        const correspondingTextContainer = document.getElementById("line-container-card");
+        // const correspondingTextContainer = document.getElementById("line-container-card");
 
         // Create a div element to hold the content
         const reportContent = document.createElement("div");
@@ -596,11 +596,35 @@
         reportContent.appendChild(document.createElement("br"));
         reportContent.appendChild(document.createElement("br"));
 
+        // Append the corresponding text container to the report content with adjusted font settings
+        const correspondingTextContainer = document.getElementById("line-container-card").cloneNode(true);
+        correspondingTextContainer.querySelectorAll('a').forEach(link => {
+            link.style.textDecoration = 'none'; // Remove underline from links
+            link.style.color = 'inherit'; // Inherit text color
+        });
+        correspondingTextContainer.querySelectorAll('p').forEach(paragraph => {
+            paragraph.style.lineHeight = '1.6'; // Adjust line height
+            paragraph.style.fontSize = '12px'; // Adjust font size
+            paragraph.style.fontFamily = 'Arial, sans-serif'; // Set font family to ensure proper rendering
+        });
+        // Convert correspondingTextContainer to an array of list items
+        const correspondingTextList = Array.from(correspondingTextContainer.querySelectorAll('p')).map(paragraph => {
+            const listItem = document.createElement('li');
+            listItem.appendChild(paragraph.cloneNode(true)); // Clone each paragraph and append to the list item
+            return listItem;
+        });
+
+        // Create a list element to hold the corresponding text
+        const correspondingTextListElement = document.createElement('ul');
+        correspondingTextList.forEach(listItem => correspondingTextListElement.appendChild(listItem));
+
+        // Append the list element to the report content
         reportContent.appendChild(document.createTextNode("Corresponding Text:"));
         reportContent.appendChild(document.createElement("br"));
-        reportContent.appendChild(correspondingTextContainer.cloneNode(true));
+        reportContent.appendChild(correspondingTextListElement);
         reportContent.appendChild(document.createElement("br"));
         reportContent.appendChild(document.createElement("br"));
+
 
         // Append the chart canvas to the report content
         reportContent.appendChild(chartCanvas.cloneNode(true)); // Clone the canvas

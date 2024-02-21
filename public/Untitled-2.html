@@ -231,6 +231,7 @@
             document.getElementById("pageLoaderOverlay").style.display = "none";
         }
 
+        
         // Add an event listener to the button to show loader when clicked
         document.getElementById("toggleAndConvert").addEventListener("click", function () {
             showPageLoader(); // Show the loader when the button is clicked
@@ -240,8 +241,9 @@
         // Call the function to hide the loader once the loading process is complete
         // This should be placed in the appropriate part of your code where the loading process is complete
         hidePageLoader();
-  </script>
+    </script>
 
+    <!-- Upload docs and del docs -->
     <script>
       const fileInput = document.getElementById("avatar");
       const chooseLabel = document.getElementById("chooseLabel");
@@ -284,6 +286,7 @@
       });
     </script>
 
+    <!-- User text area styles -->
     <script>
       function applyStyle(style) {
         const textarea = document.getElementById("userTextArea");
@@ -302,6 +305,7 @@
       }
     </script>
 
+    <!-- Post data api calls and update chart function all -->
     <script>
 
     function updateChart(domains) {
@@ -494,6 +498,7 @@
 
     </script>
 
+    <!-- Word count -->
     <script>
     // Select the textarea element
     const textarea = document.getElementById("userTextArea");
@@ -547,6 +552,7 @@
       })();
     </script>
 
+    <!-- Text box font styles -->
     <script>
 var btn_bold = document.getElementById('button_bold');
 var para = document.getElementById('userTextArea');
@@ -578,6 +584,7 @@ btn_H2.addEventListener('click', function() {
 
     </script>
 
+    <!-- Download the pdf report -->
     <script>
       // Select the button element
       const downloadPdfButton = document.getElementById("downloadPdfButton");
@@ -608,7 +615,7 @@ btn_H2.addEventListener('click', function() {
           const chartCanvas = document.getElementById("myChart");
 
           // Get the corresponding text container
-          const correspondingTextContainer = document.getElementById("line-container-card");
+          // const correspondingTextContainer = document.getElementById("line-container-card");
 
           // Create a div element to hold the content
           const reportContent = document.createElement("div");
@@ -643,15 +650,38 @@ btn_H2.addEventListener('click', function() {
           reportContent.appendChild(document.createElement("br"));
           reportContent.appendChild(document.createElement("br"));
 
-          reportContent.appendChild(document.createTextNode("Corresponding Text:"));
-          reportContent.appendChild(document.createElement("br"));
-          reportContent.appendChild(correspondingTextContainer.cloneNode(true));
-          reportContent.appendChild(document.createElement("br"));
-          reportContent.appendChild(document.createElement("br"));
 
+          // Append the corresponding text container to the report content with adjusted font settings
+        const correspondingTextContainer = document.getElementById("line-container-card").cloneNode(true);
+        correspondingTextContainer.querySelectorAll('a').forEach(link => {
+            link.style.textDecoration = 'none'; // Remove underline from links
+            link.style.color = 'inherit'; // Inherit text color
+        });
+        correspondingTextContainer.querySelectorAll('p').forEach(paragraph => {
+            paragraph.style.lineHeight = '1.6'; // Adjust line height
+            paragraph.style.fontSize = '12px'; // Adjust font size
+            paragraph.style.fontFamily = 'Arial, sans-serif'; // Set font family to ensure proper rendering
+        });
+        // Convert correspondingTextContainer to an array of list items
+        const correspondingTextList = Array.from(correspondingTextContainer.querySelectorAll('p')).map(paragraph => {
+            const listItem = document.createElement('li');
+            listItem.appendChild(paragraph.cloneNode(true)); // Clone each paragraph and append to the list item
+            return listItem;
+        });
 
-          // Append the chart canvas to the report content
-          reportContent.appendChild(chartCanvas.cloneNode(true)); // Clone the canvas
+        // Create a list element to hold the corresponding text
+        const correspondingTextListElement = document.createElement('ul');
+        correspondingTextList.forEach(listItem => correspondingTextListElement.appendChild(listItem));
+
+        // Append the list element to the report content
+        reportContent.appendChild(document.createTextNode("Corresponding Text:"));
+        reportContent.appendChild(document.createElement("br"));
+        reportContent.appendChild(correspondingTextListElement);
+        reportContent.appendChild(document.createElement("br"));
+        reportContent.appendChild(document.createElement("br"));
+
+        // Append the chart canvas to the report content
+        reportContent.appendChild(chartCanvas.cloneNode(true)); // Clone the canvas
 
 
           // Define options for PDF generation
