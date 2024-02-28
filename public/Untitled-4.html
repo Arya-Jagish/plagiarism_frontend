@@ -323,7 +323,7 @@
         postData(); // Call the combined function
       });
 
-      async function postData() {
+    async function postData() {
         // Show the loader when starting the loading process
         showPageLoader();
         const text = document.getElementById("userTextArea").value;
@@ -358,6 +358,9 @@
             
             // Update the chart with the domains data
             updateChart(responseData.domains);
+
+            // Highlight the line_part in the textarea
+            highlightLinePart(responseData.lines_source);
 
             // Hide the loader once the loading process is complete
             hidePageLoader();
@@ -472,7 +475,7 @@
 
             return lineHTML;
         }
-
+        
     </script>
 
     <script>

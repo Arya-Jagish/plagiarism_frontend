@@ -251,3 +251,7 @@ input {
         height: 10px; /* Example: Modify height of progress bars */
     }
 }
+
+.plagiarized-text {
+    background-color: yellow;
+  }
