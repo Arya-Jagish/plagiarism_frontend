@@ -116,9 +116,9 @@
       <div class="col-md-3" id="column2">
         <!-- Content for column 2 goes here -->
 
-        <h5 class="card-title text-center mt-3 mb-4">
+        <!-- <h5 class="card-title text-center mt-3 mb-4">
           <b><center>Sources</center></b>
-        </h5>
+        </h5> -->
         <!-- Add this div where you want to display the response -->
 
         <div class="text-center">
@@ -147,60 +147,58 @@
       <!-- Second Column ends -->
 
       <!-- Third Column begins -->
-    <div class="col-md-4" id="column3" style="border: 0px solid #ccc; padding: 15px;">
-    <h5 class="card-title text-center mt-3 mb-4"><h6><b><center>Overview</center></b></h6><br>
+        <div class="col-md-4" id="column3" style="border: 0px solid #ccc; padding: 15px;display: none;">
+        <h5 class="card-title text-center mt-3 mb-4">
 
-    <div class="card mx-auto" style="max-width: 300px;">
-        <div class="card-header">
-            Plagiarism Percentage
-        </div>
-        <div class="card-body">
-            <!-- <h5 class="card-title">Let's Check</h5> -->
-          <div class="plagiarism-percentage" id="percentage-text"></div><br><br>
-            <div class="progress-bar-container">
-                <div class="progress">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated" id="plagiarism-progress"></div>
-                </div>
-            </div>  
-        </div>
+        <div class="card mx-auto" style="max-width: 300px;">
+            <div class="card-header">
+                <h6>Plagiarism Percentage</h6>
+            </div>
+            <div class="card-body">
+                <!-- <h5 class="card-title">Let's Check</h5> -->
+              <div class="plagiarism-percentage" id="percentage-text"></div><br><br>
+                <div class="progress-bar-container">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" id="plagiarism-progress"></div>
+                    </div>
+                </div>  
+            </div>
 
-        <div class="card-group">
-          <div class="card">
-              <div class="card-body">
-                  <h6 class="card-title">Total Words<br><br><span id="word-count" class="animated-number">0</span></h6>
+            <div class="card-group">
+              <div class="card">
+                  <div class="card-body">
+                      <h6 class="card-title">Total Words<br><br><span id="word-count" class="animated-number">0</span></h6>
+                  </div>
               </div>
-          </div>
 
-          <div class="card">
-            <div class="card-body">
-                <h6 class="card-title">Matched Sentence<br><br><span id="char-count" class="animated-number">0</span></h6>
-            </div>
-          </div>
+              <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Matched Sentence<br><br><span id="char-count" class="animated-number">0</span></h6>
+                </div>
+              </div>
 
-          <div class="card">
-            <div class="card-body">
-              <h6 class="card-title">Domain Count<br><br><span id="domains-count" class="animated-number">0</span></h6>
+              <div class="card">
+                <div class="card-body">
+                  <h6 class="card-title">Domain Count<br><br><span id="domains-count" class="animated-number">0</span></h6>
+                </div>
+              </div>
             </div>
-          </div>
+      </div>
+
+    <div style="width: 100%; display: flex; justify-content: center; align-items: center;">
+      <div style="width: 300px; height: 300px;">
+          <canvas id="myChart"></canvas>
+      </div>
+    </div>
+      
         </div>
-  </div>
+      <!-- Third Column ends -->
 
-<br><br>
+      <div id="pageLoaderOverlay" class="overlay">
+        <div class="spinner"></div>
+      </div>
+    </div>
 
-<div style="width: 100%; display: flex; justify-content: center; align-items: center;">
-  <div style="width: 300px; height: 300px;">
-      <canvas id="myChart"></canvas>
-  </div>
-</div>
-  
-</div>
-<!-- Third Column ends -->
-
-<div id="pageLoaderOverlay" class="overlay">
-  <div class="spinner"></div>
-</div>
-  </div>
-    
     <script>
         // Function to show the page loader
         function showPageLoader() {
@@ -212,17 +210,16 @@
             document.getElementById("pageLoaderOverlay").style.display = "none";
         }
 
+        
         // Add an event listener to the button to show loader when clicked
         document.getElementById("toggleAndConvert").addEventListener("click", function () {
             showPageLoader(); // Show the loader when the button is clicked
             postData(); // Call the combined function
         });
-
-        // Call the function to hide the loader once the loading process is complete
-        // This should be placed in the appropriate part of your code where the loading process is complete
         hidePageLoader();
     </script>
 
+    <!-- Upload docs and del docs -->
     <script>
       const fileInput = document.getElementById("avatar");
       const chooseLabel = document.getElementById("chooseLabel");
@@ -265,6 +262,7 @@
       });
     </script>
 
+    <!-- User text area styles -->
     <script>
       function applyStyle(style) {
         const textarea = document.getElementById("userTextArea");
@@ -283,6 +281,7 @@
       }
     </script>
 
+    <!-- Post data api calls and update chart function all -->
     <script>
 
     function updateChart(domains) {
@@ -320,10 +319,12 @@
       }
 
       document.getElementById("toggleAndConvert").addEventListener("click", function () {
+        // Show the third column
+      document.getElementById("column3").style.display = "block";
         postData(); // Call the combined function
       });
 
-    async function postData() {
+      async function postData() {
         // Show the loader when starting the loading process
         showPageLoader();
         const text = document.getElementById("userTextArea").value;
@@ -359,9 +360,6 @@
             // Update the chart with the domains data
             updateChart(responseData.domains);
 
-            // Highlight the line_part in the textarea
-            highlightLinePart(responseData.lines_source);
-
             // Hide the loader once the loading process is complete
             hidePageLoader();
 
@@ -373,63 +371,91 @@
     }
 
     function updateCard(response) {
-        const percentageText = document.getElementById('percentage-text');
-        const progressBar = document.getElementById('plagiarism-progress');
-        let circle_percent = document.getElementById('progress');
+    const percentageText = document.getElementById('percentage-text');
+    const progressBar = document.getElementById('plagiarism-progress');
+    let circle_percent = document.getElementById('progress');
 
-        if (percentageText) {
-            const plagiarismPercentage = response.plag_percent.toFixed(2);
-            percentageText.innerText = `${plagiarismPercentage}%`;
+    if (percentageText) {
+        const plagiarismPercentage = response.plag_percent.toFixed(2);
+        percentageText.innerText = `${plagiarismPercentage}%`;
 
-            if (progressBar) {
-                progressBar.style.width = `${response.plag_percent}%`;
-            }
-
-            if (circle_percent) {
-                circle_percent.setAttribute("value", response.plag_percent);
-            }
+        if (progressBar) {
+            progressBar.style.width = `${response.plag_percent}%`;
         }
 
-        const suggestionsContainer = document.getElementById('column2');
-
-        if (suggestionsContainer) {
-            suggestionsContainer.innerHTML = `
-                <h5 class="card-title text-center mt-3 mb-4">
-                    <b><center>Sources</center></b>
-                </h5>
-                
-                <div class="card border-0">
-                    <div class="card-body">
-                        <h5 class="card-title">Domains</h5>
-                        <div id="domains-container-card">
-                            ${createDomains(response.domains)}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card border-0 mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">URLs</h5>
-                        <div id="urls-container-card">
-                            ${createLinks(response.urls)}
-                        </div>
-                    </div>
-                </div>
-
-                        <div id="line-container-card">
-                            ${createLineLinks(response.lines_source)}
-                        </div>
-                    
-            `;
-        }
-        // Count the number of domains
-        const domainsCount = response.domains.length;
-        const domainsCountElement = document.getElementById('domains-count');
-
-        if (domainsCountElement) {
-            domainsCountElement.innerText = `${domainsCount}`;
+        if (circle_percent) {
+            circle_percent.setAttribute("value", response.plag_percent);
         }
     }
+
+    const suggestionsContainer = document.getElementById('column2');
+
+    if (suggestionsContainer) {
+        suggestionsContainer.innerHTML = `
+            <h5 class="card-title text-center mt-3 mb-4">
+                <b><center>Sources</center></b>
+            </h5>
+            
+            <div class="card border-0">
+                <div class="card-body">
+                    <h5 class="card-title">Domains</h5>
+                    <div id="domains-container-card">
+                        ${createDomains(response.domains)}
+                    </div>
+                </div>
+            </div>
+
+            <div class="card border-0 mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">URLs</h5>
+                    <div id="urls-container-card">
+                        ${createLinks(response.urls)}
+                    </div>
+                </div>
+            </div>
+
+            <div class="card border-0 mb-3">
+                <div class="card-body" id="line-container-card">
+                    <!-- Display the first few sentences -->
+                    ${createLineLinks(response.lines_source.slice(0, 1))}
+                    <!-- Hidden div for additional content -->
+                    <div id="more" style="display: none;">
+                        ${createLineLinks(response.lines_source.slice(1))}
+                    </div>
+                </div>
+                <button onclick="toggleReadMore()" id="readMoreBtn" class="show-more-btn" style="border: none;"><span>Show More</button>
+
+            </div>
+
+
+
+        `;
+    }
+    // Count the number of domains
+    const domainsCount = response.domains.length;
+    const domainsCountElement = document.getElementById('domains-count');
+
+    if (domainsCountElement) {
+        domainsCountElement.innerText = `${domainsCount}`;
+    }
+}
+
+    function toggleReadMore() {
+    var moreText = document.getElementById("more");
+    var btnText = document.getElementById("readMoreBtn");
+    var cardBody = document.querySelector(".card-body");
+
+    if (moreText.style.display === "none") {
+        moreText.style.display = "block";
+        btnText.innerHTML = "Show Less";
+        cardBody.style.maxHeight = "none";
+    } else {
+        moreText.style.display = "none";
+        btnText.innerHTML = "Show More";
+        cardBody.style.maxHeight = "200px"; // Set your desired fixed height here
+    }
+}
+
 
     function createLinks(items) {
         const listItems = items.map(item => `<li><a href="${item}" target="_blank" style="text-decoration: none;">${item}</a></li>`).join('\n');
@@ -451,16 +477,30 @@
                 const lineText = line.line_part; // Assuming the property name is line_part
 
                 // Check if the corresponding text is present
-                if (lineText) {
+                if (lineText && lineText.trim() !== '') {
+                  // console.log(lineText == ' ');
                     // Increment the counter if the corresponding sentence is the same
                     matchingSentenceCount++;
                     // Generate the card HTML
                     return `
-                        <div class="card border-0 mb-3">
-                            <div class="card-body" style="width: 100%;">
-                                <p>Corresponding Text:<br> <a href="${url}" target="_blank" style="text-decoration: none; color: inherit;">${lineText}</a></p>
-                            </div>
-                        </div>
+
+                    <div class="card border-0 mb-3">
+                      <div class="card-body" style="width: 100%;">
+                          <p style="margin-bottom: 0;">
+                              <button class="source-button" style="background: none; border: none; padding: 0; cursor: pointer;">
+                                  <a href="${url}" target="_blank" style="text-decoration: none; color: inherit;">
+                                      <p>${lineText}</p>
+                                      <br>
+                                      <span>Show Source</span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-right arrow-icon" viewBox="0 0 16 16" style="color: inherit; vertical-align: text-bottom;">
+                                          <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"/>
+                                          <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
+                                      </svg>
+                                  </a>
+                              </button>
+                          </p>
+                      </div>
+                  </div>
                     `;
                 } else {
                     return ''; // If corresponding text is not present, return an empty string
@@ -475,9 +515,11 @@
 
             return lineHTML;
         }
-        
+
     </script>
 
+
+    <!-- Word count -->
     <script>
     // Select the textarea element
     const textarea = document.getElementById("userTextArea");
@@ -531,75 +573,168 @@
       })();
     </script>
 
+<!-- Text box font styles -->
     <script>
-        // Select the button element
-        const downloadPdfButton = document.getElementById("downloadPdfButton");
-
-        // Function to check if the second and third columns are visible
-        function areColumnsVisible() {
-            const column2 = document.getElementById("column2");
-            const column3 = document.getElementById("column3");
-            return column2.style.display !== "none" && column3.style.display !== "none";
+      var btn_bold = document.getElementById('button_bold');
+      var para = document.getElementById('userTextArea');
+      var btn_italics = document.getElementById('button_italics');
+      var btn_underline = document.getElementById('button_underline');
+      var btn_H1=document.getElementById('button_H1');
+      var btn_H2=document.getElementById('button_H2');
+      
+      // Event listeners for button clicks
+      btn_bold.addEventListener('click', function() {
+        toggleStyle('fontWeight', 'bold');
+      });
+      
+      btn_italics.addEventListener('click', function() {
+        toggleStyle('fontStyle', 'italic');
+      });
+      
+      btn_underline.addEventListener('click', function() {
+        toggleUnderline();
+      });
+      
+      btn_H1.addEventListener('click', function() {
+        toggleFontSize('24px');
+      });
+      
+      btn_H2.addEventListener('click', function() {
+        toggleFontSize('36px');
+      });
+      
+      // Function to toggle text style
+      function toggleStyle(style, value) {
+        if (para.style[style] === value) {
+          para.style[style] = 'normal'; // Revert back to normal text if already styled
+        } else {
+          para.style[style] = value; // Apply style if not applied
         }
-
-        function downloadReportPdf() {
-        // Check if the columns are visible
-        if (!areColumnsVisible()) {
-            // If columns are not visible, return and do not generate PDF
-            alert("Please display the second and third columns to generate the PDF.");
-            return;
+      }
+      
+      // Function to toggle underline
+      function toggleUnderline() {
+        if (para.style.textDecoration === 'underline') {
+          para.style.textDecoration = 'none'; // Revert back to normal text if already underlined
+        } else {
+          para.style.textDecoration = 'underline'; // Apply underline if not applied
         }
+      }
+      
+      // Function to toggle font size
+      function toggleFontSize(fontSize) {
+        if (para.style.fontSize === fontSize) {
+          para.style.fontSize = 'initial'; // Revert back to normal font size if already set
+        } else {
+          para.style.fontSize = fontSize; // Apply font size if not applied
+        }
+      }
+      
+    </script>
+  
+    <!-- Download the pdf report -->
+    <script>
+      // Select the button element
+      const downloadPdfButton = document.getElementById("downloadPdfButton");
 
-        // Get the text from the textarea
-        const text = document.getElementById("userTextArea").value.trim();
+      // Function to check if the second and third columns are visible
+      function areColumnsVisible() {
+          const column2 = document.getElementById("column2");
+          const column3 = document.getElementById("column3");
+          return column2.style.display !== "none" && column3.style.display !== "none";
+      }
 
-        // Get the plagiarism percentage
-        const plagiarismPercentage = document.getElementById("percentage-text").textContent;
+      // Function to generate the report content and download the PDF
+      function downloadReportPdf() {
+          // Check if the columns are visible
+          if (!areColumnsVisible()) {
+              // If columns are not visible, return and do not generate PDF
+              alert("Please display the second and third columns to generate the PDF.");
+              return;
+          }
 
-        // Get the chart canvas
-        const chartCanvas = document.getElementById("myChart");
+          // Get the text from the textarea
+          const text = document.getElementById("userTextArea").value.trim();
 
-        // Get the corresponding text container
-        // const correspondingTextContainer = document.getElementById("line-container-card");
+          // Get the plagiarism percentage
+          const plagiarismPercentage = document.getElementById("percentage-text").textContent;
 
-        // Create a div element to hold the content
-        const reportContent = document.createElement("div");
+          // Get the current date
+          const currentDate = new Date().toLocaleDateString();
 
-        // Append the heading "Plagiarism Report" to the report content
-        const heading = document.createElement("h3");
-        heading.textContent = "Plagiarism Report";
-        heading.style.textAlign = "center";
-        reportContent.appendChild(heading);
-        reportContent.appendChild(document.createElement("br"));
+          // Calculate word count
+          const wordCount = text.split(/\s+/).filter(word => word.trim() !== '').length;
 
-        // Append the text, domains, URLs, percentage, and chart image to the report content
-        reportContent.appendChild(document.createTextNode("Text:"));
-        reportContent.appendChild(document.createElement("br"));
-        const textElement = document.createElement("div");
-        textElement.style.lineHeight = "1.6"; // Adjust line height
-        textElement.style.fontSize = "12px"; // Adjust font size
-        textElement.textContent = text;
-        reportContent.appendChild(textElement);
-        reportContent.appendChild(document.createElement("br"));
-        reportContent.appendChild(document.createElement("br"));
+          // Get the chart canvas
+          const chartCanvas = document.getElementById("myChart");
 
-        reportContent.appendChild(document.createTextNode("Domains:"));
-        reportContent.appendChild(document.createElement("br"));
-        reportContent.appendChild(document.getElementById("domains-container-card").cloneNode(true));
-        reportContent.appendChild(document.createElement("br"));
-        reportContent.appendChild(document.createElement("br"));
+          // Get the corresponding text container
+          // const correspondingTextContainer = document.getElementById("line-container-card");
 
-        reportContent.appendChild(document.createTextNode("URLs:"));
-        reportContent.appendChild(document.createElement("br"));
-        reportContent.appendChild(document.getElementById("urls-container-card").cloneNode(true));
-        reportContent.appendChild(document.createElement("br"));
-        reportContent.appendChild(document.createElement("br"));
+          // Create a div element to hold the content
+          const reportContent = document.createElement("div");
 
-        reportContent.appendChild(document.createTextNode("Plagiarism Percentage: " + plagiarismPercentage));
-        reportContent.appendChild(document.createElement("br"));
-        reportContent.appendChild(document.createElement("br"));
+          // Append the heading "Plagiarism Report" to the report content
+          const heading = document.createElement("h3");
+          heading.textContent = "Plagiarism Report";
+          heading.style.textAlign = "center";
+          reportContent.appendChild(heading);
+          reportContent.appendChild(document.createElement("br"));
+          
+          // Create a table to display information
+          const table = document.createElement("table");
+          const tbody = document.createElement("tbody");
 
-        // Append the corresponding text container to the report content with adjusted font settings
+          // Add rows for each information
+          tbody.innerHTML += `
+          <table>
+
+              <tr>
+                  <td>Date of Download: </td>
+                  <td>${currentDate}</td>
+              </tr>
+              <tr>
+                  <td>Word Count: </td>
+                  <td>${wordCount}</td>
+              </tr>
+              
+              <tr>
+                  <td>Plagiarism Percentage: </td>
+                  <td>${plagiarismPercentage}</td>
+              </tr>
+              </table>
+          `;
+
+
+          // Append the table to the report content
+          table.appendChild(tbody);
+          reportContent.appendChild(table);
+          reportContent.appendChild(document.createElement("br"));
+
+          // Append the text, domains, URLs, percentage, and chart image to the report content
+          reportContent.appendChild(document.createTextNode("Text:"));
+          reportContent.appendChild(document.createElement("br"));
+          reportContent.appendChild(document.createTextNode(text));
+          reportContent.appendChild(document.createElement("br"));
+          reportContent.appendChild(document.createElement("br"));
+
+          reportContent.appendChild(document.createTextNode("Domains:"));
+          reportContent.appendChild(document.createElement("br"));
+          reportContent.appendChild(document.getElementById("domains-container-card").cloneNode(true));
+
+
+          reportContent.appendChild(document.createTextNode("URLs:"));
+          reportContent.appendChild(document.createElement("br"));
+          reportContent.appendChild(document.getElementById("urls-container-card").cloneNode(true));
+          reportContent.appendChild(document.createElement("br"));
+          // reportContent.appendChild(document.createElement("br"));
+
+          // reportContent.appendChild(document.createTextNode("Plagiarism Percentage: " + plagiarismPercentage));
+          // reportContent.appendChild(document.createElement("br"));
+          // reportContent.appendChild(document.createElement("br"));
+
+
+          // Append the corresponding text container to the report content with adjusted font settings
         const correspondingTextContainer = document.getElementById("line-container-card").cloneNode(true);
         correspondingTextContainer.querySelectorAll('a').forEach(link => {
             link.style.textDecoration = 'none'; // Remove underline from links
@@ -607,8 +742,8 @@
         });
         correspondingTextContainer.querySelectorAll('p').forEach(paragraph => {
             paragraph.style.lineHeight = '1.6'; // Adjust line height
-            paragraph.style.fontSize = '12px'; // Adjust font size
-            paragraph.style.fontFamily = 'Arial, sans-serif'; // Set font family to ensure proper rendering
+            paragraph.style.fontSize = '18px'; // Adjust font size
+            paragraph.style.fontFamily = 'cursive'; 
         });
         // Convert correspondingTextContainer to an array of list items
         const correspondingTextList = Array.from(correspondingTextContainer.querySelectorAll('p')).map(paragraph => {
@@ -622,32 +757,32 @@
         correspondingTextList.forEach(listItem => correspondingTextListElement.appendChild(listItem));
 
         // Append the list element to the report content
-        reportContent.appendChild(document.createTextNode("Corresponding Text:"));
+        reportContent.appendChild(document.createTextNode("Sources:"));
         reportContent.appendChild(document.createElement("br"));
         reportContent.appendChild(correspondingTextListElement);
-        reportContent.appendChild(document.createElement("br"));
         reportContent.appendChild(document.createElement("br"));
 
 
         // Append the chart canvas to the report content
         reportContent.appendChild(chartCanvas.cloneNode(true)); // Clone the canvas
 
-        // Define options for PDF generation
-        const options = {
-            margin: 10,
-            filename: 'report.pdf',
-            html2canvas: { scale: 2 },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        };
+          // Define options for PDF generation
+          const options = {
+              margin: 10,
+              filename: 'report.pdf',
+              html2canvas: { scale: 2 },
+              jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+          };
 
-        // Use html2pdf library to generate PDF
-        html2pdf().from(reportContent).set(options).save();
-    }
+          // Use html2pdf library to generate PDF
+          html2pdf().from(reportContent).set(options).save();
+      }
 
-        // Add event listener for button click
-        downloadPdfButton.addEventListener("click", downloadReportPdf);
+          // Add event listener for button click
+          downloadPdfButton.addEventListener("click", downloadReportPdf);
 
     </script>
+  
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>

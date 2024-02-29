@@ -15,10 +15,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.0/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
   </head>
   <body class="p-3" style="background-color: rgb(251, 248, 248);">
+    
     <div class="row">
       <!-- First Column -->
       <div class="col-sm-12 col-md-5">
@@ -106,9 +107,7 @@
           <button type="button" class="btn btn-outline-primary border-0" id="button_H2">
             H2
           </button>
-          <!-- <button type="button" class="btn btn-outline-primary border-0">
-            157 words
-          </button> -->
+          <button id="downloadPdfButton" class="btn btn-outline-primary border-0">Download PDF</button>
         </div>
         <br />
       </div>
@@ -119,7 +118,7 @@
         <!-- Content for column 2 goes here -->
 
         <h5 class="card-title text-center mt-3 mb-4">
-          <b><center>Suggestions</center></b>
+          <b><center>Sources</center></b>
         </h5>
         <!-- Add this div where you want to display the response -->
 
@@ -136,11 +135,14 @@
           </p>
         </div>
 
-        <div id="urls-container"></div>
-        <br />
-        <div id="domains-container"></div>
 
-        
+        <div id="domains-container"></div>
+        <br>
+        <div id="urls-container"></div>
+        <br>
+        <div id="line-container"></div>
+
+        <!-- <button id="downloadPdfButton">Download PDF</button> -->
 
       </div>
       <!-- Second Column ends -->
@@ -155,7 +157,7 @@
         </div>
         <div class="card-body">
             <!-- <h5 class="card-title">Let's Check</h5> -->
-          <div class="plagiarism-percentage" id="percentage-text"></div>
+          <div class="plagiarism-percentage" id="percentage-text"></div><br><br>
             <div class="progress-bar-container">
                 <div class="progress">
                     <div class="progress-bar progress-bar-striped progress-bar-animated" id="plagiarism-progress"></div>
@@ -172,7 +174,7 @@
 
           <div class="card">
             <div class="card-body">
-                <h6 class="card-title">Matched words<br><br><span id="char-count" class="animated-number">0</span></h6>
+                <h6 class="card-title">Matched Sentence<br><br><span id="char-count" class="animated-number">0</span></h6>
             </div>
           </div>
 
@@ -191,12 +193,39 @@
       <canvas id="myChart"></canvas>
   </div>
 </div>
-
+  
 </div>
 <!-- Third Column ends -->
 
+<div id="pageLoaderOverlay" class="overlay">
+  <div class="spinner"></div>
+</div>
   </div>
+    
+    <!-- Page loader -->
+    <script>
+        // Function to show the page loader
+        function showPageLoader() {
+            document.getElementById("pageLoaderOverlay").style.display = "flex";
+        }
 
+        // Function to hide the page loader
+        function hidePageLoader() {
+            document.getElementById("pageLoaderOverlay").style.display = "none";
+        }
+
+        // Add an event listener to the button to show loader when clicked
+        document.getElementById("toggleAndConvert").addEventListener("click", function () {
+            showPageLoader(); // Show the loader when the button is clicked
+            postData(); // Call the combined function
+        });
+
+        // Call the function to hide the loader once the loading process is complete
+        // This should be placed in the appropriate part of your code where the loading process is complete
+        hidePageLoader();
+    </script>
+
+    <!-- Toggle button and the upper portion of text area -->
     <script>
       const fileInput = document.getElementById("avatar");
       const chooseLabel = document.getElementById("chooseLabel");
@@ -212,10 +241,19 @@
           chooseLabel.style.display = "none";
           fileNameSection.style.display = "inline-block";
           fileNameDisplay.textContent = selectedFile.name;
+          const toggleAndConvertButton =
+        document.getElementById("toggleAndConvert");
+
+      fileInput.addEventListener("change", function () {
+        const selectedFile = this.files[0];
+        if (selectedFile) {
+          chooseLabel.style.display = "none";
+          fileNameSection.style.display = "inline-block";
+          fileNameDisplay.textContent = selectedFile.name;
           toggleAndConvertButton.disabled = false;
         }
       });
-
+      
       deleteFileButton.addEventListener("click", function () {
         fileInput.value = "";
         fileNameDisplay.textContent = "";
@@ -225,6 +263,7 @@
       });
     </script>
 
+    
     <script>
       document.getElementById("avatar").addEventListener("change", function () {
         const file = this.files[0];
@@ -257,307 +296,270 @@
       }
     </script>
 
-<script>
-  // Function to update the Chart.js doughnut chart based on domain data
-  function updateChart(domains) {
-    const domainNames = domains.map(domain => domain);
-    const domainsCount = domains.length;
-    print(domainNames);
-
-    const data = {
-      labels: domainNames,
-      datasets: [{
-        label: 'Domain Distribution',
-        data: Array(domainsCount).fill(1), // Filling with dummy data for doughnut chart
-        backgroundColor: [
-          'rgb(255, 99, 132)',
-          'rgb(54, 162, 235)',
-          'rgb(255, 205, 86)',
-          // Add more colors as needed
-        ],
-        hoverOffset: 4
-      }]
-    };
-
-    const config = {
-      type: 'doughnut',
-      data: data,
-    };
-
-    // Get the canvas context and update the chart
-    var ctx = document.getElementById('myChart').getContext('2d');
     
-    var myChart = new Chart(ctx, config);
-  }
-
-  document.getElementById("toggleAndConvert").addEventListener("click", function () {
-    postData();
-  });
-
-  async function postData() {
-    const text = document.getElementById("userTextArea").value;
-
-    const data = {
-      text: text,
-    };
-
-    try {
-      // Simulating the response from the API
-      const response = {
-        query: "npm is a package manager for the JavaScript programming language...",
-        domains: ["upload.wikimedia.org", "en.wikipedia.org"],
-        urls: [
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Npm-logo.svg/1200px-Npm-logo.svg.png?sa=X&ved=2ahUKEwjf9IHvmvCDAxW12TgGHWTcATUQ_B16BAgBEAI",
-          "https://en.wikipedia.org/wiki/Npm",
-        ],
-        corpus_data: "\n npm is a package manager for the JavaScript programming language maintained by npm, Inc. npm is the default package manager for the JavaScript runtime environment Node.js...",
-        plag_percent: 85.07916732591792,
-      };
-
-      // Use the response as needed in your application logic
-      console.log("Post Response:", response);
-
-      // Update the card content
-      updateCard(response);
-
-      // Update the chart with the domains data
-      updateChart(response.domains);
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  }
-
-  function updateCard(response) {
-    const percentageText = document.getElementById('percentage-text');
-    const progressBar = document.getElementById('plagiarism-progress');
-    let circle_percent = document.getElementById('progress');
-
-    if (percentageText) {
-        const plagiarismPercentage = response.plag_percent.toFixed(2);
-        percentageText.innerText = `Plagiarism Percentage: ${plagiarismPercentage}%`;
-
-        if (progressBar) {
-            progressBar.style.width = `${response.plag_percent}%`;
-        }
-
-        if (circle_percent) {
-            circle_percent.setAttribute("value", response.plag_percent);
-        }
-    }
-
-    const suggestionsContainer = document.getElementById('column2');
-
-    if (suggestionsContainer) {
-        suggestionsContainer.innerHTML = `
-            <h5 class="card-title text-center mt-3 mb-4">
-                <b><center>Suggestions</center></b>
-            </h5>
-            <div class="card border-0 mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">URLs</h5>
-                    <div id="urls-container-card">
-                        ${createLinks(response.urls)}
-                    </div>
-                </div>
-            </div>
-            <div class="card border-0">
-                <div class="card-body">
-                    <h5 class="card-title">Domains</h5>
-                    <div id="domains-container-card">
-                        ${createDomains(response.domains)}
-                    </div>
-                </div>
-            </div>
-        `;
-    }
-     // Count the number of domains
-    const domainsCount = response.domains.length;
-    const domainsCountElement = document.getElementById('domains-count');
-
-    if (domainsCountElement) {
-        domainsCountElement.innerText = `${domainsCount}`;
-    }
-}
-
-function createLinks(items) {
-    const listItems = items.map(item => `<li><a href="${item}" target="_blank" style="text-decoration: none;">${item}</a></li>`).join('\n');
-    return `<ul style="list-style-type: disc; padding-left: 20px;">${listItems}</ul>`;
-}
-
-function createDomains(items) {
-    const domainItems = items.map(item => `<li>${item.domain}</li>`);
-    return `<ul>${domainItems.join('')}</ul>`;
-}
-</script>
-
-
-    <!-- <script>
-  document
-    .getElementById("toggleAndConvert")
-    .addEventListener("click", function () {
-      postData(); // Call the combined function
-    });
-
-  async function postData() {
-    const text = document.getElementById("userTextArea").value;
-
-    const data = {
-      text: text,
-    };
-
-    try {
-      // Simulating the response from the API
-      const response = {
-        query:
-          "npm is a package manager for the JavaScript programming language...",
-        domains: ["upload.wikimedia.org", "en.wikipedia.org"],
-        urls: [
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Npm-logo.svg/1200px-Npm-logo.svg.png?sa=X&ved=2ahUKEwjf9IHvmvCDAxW12TgGHWTcATUQ_B16BAgBEAI",
-          "https://en.wikipedia.org/wiki/Npm",
-        ],
-        corpus_data:
-          "\n npm is a package manager for the JavaScript programming language maintained by npm, Inc. npm is the default package manager for the JavaScript runtime environment Node.js...",
-        plag_percent: 85.07916732591792,
-      };
-
-      // Use the response as needed in your application logic
-      console.log("Post Response:", response);
-
-      // Update the card content
-      updateCard(response);
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  }
-
-  function updateCard(response) {
-    const percentageText = document.getElementById('percentage-text');
-    const progressBar = document.getElementById('plagiarism-progress');
-    let circle_percent = document.getElementById('progress');
-
-    if (percentageText) {
-        const plagiarismPercentage = response.plag_percent.toFixed(2);
-        percentageText.innerText = `Plagiarism Percentage: ${plagiarismPercentage}%`;
-
-        if (progressBar) {
-            progressBar.style.width = `${response.plag_percent}%`;
-        }
-
-        if (circle_percent) {
-            circle_percent.setAttribute("value", response.plag_percent);
-        }
-    }
-
-    const suggestionsContainer = document.getElementById('column2');
-
-    if (suggestionsContainer) {
-        suggestionsContainer.innerHTML = `
-            <h5 class="card-title text-center mt-3 mb-4">
-                <b><center>Suggestions</center></b>
-            </h5>
-            <div class="card border-0 mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">URLs</h5>
-                    <div id="urls-container-card">
-                        ${createLinks(response.urls)}
-                    </div>
-                </div>
-            </div>
-            <div class="card border-0">
-                <div class="card-body">
-                    <h5 class="card-title">Domains</h5>
-                    <div id="domains-container-card">
-                        ${createDomains(response.domains)}
-                    </div>
-                </div>
-            </div>
-        `;
-    }
-     // Count the number of domains
-    const domainsCount = response.domains.length;
-    const domainsCountElement = document.getElementById('domains-count');
-
-    if (domainsCountElement) {
-        domainsCountElement.innerText = `${domainsCount}`;
-    }
-}
-
-function createLinks(items) {
-    const listItems = items.map(item => `<li><a href="${item}" target="_blank" style="text-decoration: none;">${item}</a></li>`).join('\n');
-    return `<ul style="list-style-type: disc; padding-left: 20px;">${listItems}</ul>`;
-}
-
-function createDomains(items) {
-    const domainItems = items.map(item => `<li>${item.domain}</li>`);
-    return `<ul>${domainItems.join('')}</ul>`;
-}
-    </script> -->
-      
-  <!-- <script>
-        // Assuming you have the domains count and names available in JavaScript variables
-        const domainsCount = response.domains.length;
-        const domainNames = response.domains.map(domain => domain.name);
-    
-        const data = {
-            labels: domainNames,
-            datasets: [{
-                label: 'Domain Distribution',
-                data: [domainsCount], // Using domainsCount as the data
-                backgroundColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(54, 162, 235)',
-                    'rgb(255, 205, 86)',
-                    // Add more colors as needed
-                ],
-                hoverOffset: 4
-            }]
-        };
-    
-        const config = {
-            type: 'doughnut',
-            data: data,
-        };
-    
-        window.onload = function() {
-            var ctx = document.getElementById('myChart').getContext('2d');
-            var myChart = new Chart(ctx, config);
-        };
-  </script> -->
-    
-
     <script>
-// Select the textarea element
-const textarea = document.getElementById("userTextArea");
 
-// Select the span element where the word count will be displayed
-const wordCountSpan = document.getElementById("word-count");
+  function updateChart(domains) {
+      const domainNames = domains.map(domain => domain.domain);
+      const domainsCount = domains.length;
+      console.log(domainNames);
+  
+      const data = {
+        labels: domainNames,
+        datasets: [{
+          label: 'Domain Distribution',
+          data: Array(domainsCount).fill(1), // Filling with dummy data for doughnut chart
+          backgroundColor: [
+            'rgb(255, 99, 132)',
+            'rgb(54, 162, 235)',
+            'rgb(255, 205, 86)',
+            // Add more colors as needed
+          ],
+          hoverOffset: 4
+        }]
+      };
+  
+      const config = {
+        type: 'doughnut',
+        data: data,
+      };
+  
+      // Get the canvas context and update the chart
+      var ctx = document.getElementById('myChart').getContext('2d');
+      let chartStatus = Chart.getChart("myChart");
+      if (chartStatus != undefined) {
+        chartStatus.destroy();
+      }
+      var myChart = new Chart(ctx, config);
+    }
+  
+    document.getElementById("toggleAndConvert").addEventListener("click", function () {
+      postData(); // Call the combined function
+  
+    });
+  
+  async function postData() {
+      // Show the loader when starting the loading process
+      showPageLoader();
+      const text = document.getElementById("userTextArea").value;
+  
+      const data = {
+          text: text,
+      };
+  
+      try {
+          const apiUrl = "http://192.168.64.137:8000/api/PlagiarismCheck/"; // API endpoint for testing purposes
+  
+          const response = await fetch(apiUrl, {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json",
+              },
+              body: JSON.stringify(data),
+          });
+  
+          if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+  
+          const responseData = await response.json();
+          console.log("Response data:", responseData);
+  
+          // Update the card content in the second column
+          updateCard(responseData);
+  
+          // Count words and update the word count in the third column of the second card
+          updateWordCount(text);
+          
+          // Update the chart with the domains data
+          updateChart(responseData.domains);
+  
+          // Highlight the line_part in the textarea
+          // highlightPlagiarizedText(responseData.line_part);
+  
+          // Hide the loader once the loading process is complete
+          hidePageLoader();
+  
+      } catch (error) {
+          console.error("Error:", error);
+          // Ensure the loader is hidden even if an error occurs
+          hidePageLoader();
+      }
+  }
+  
+  function updateCard(response) {
+      const percentageText = document.getElementById('percentage-text');
+      const progressBar = document.getElementById('plagiarism-progress');
+      let circle_percent = document.getElementById('progress');
+  
+      if (percentageText) {
+          const plagiarismPercentage = response.plag_percent.toFixed(2);
+          percentageText.innerText = `${plagiarismPercentage}%`;
+  
+          if (progressBar) {
+              progressBar.style.width = `${response.plag_percent}%`;
+          }
+  
+          if (circle_percent) {
+              circle_percent.setAttribute("value", response.plag_percent);
+          }
+      }
+  
+      const suggestionsContainer = document.getElementById('column2');
+  
+      if (suggestionsContainer) {
+          suggestionsContainer.innerHTML = `
+              <h5 class="card-title text-center mt-3 mb-4">
+                  <b><center>Sources</center></b>
+              </h5>
+              
+              <div class="card border-0">
+                  <div class="card-body">
+                      <h5 class="card-title">Domains</h5>
+                      <div id="domains-container-card">
+                          ${createDomains(response.domains)}
+                      </div>
+                  </div>
+              </div>
+  
+              <div class="card border-0 mb-3">
+                  <div class="card-body">
+                      <h5 class="card-title">URLs</h5>
+                      <div id="urls-container-card">
+                          ${createLinks(response.urls)}
+                      </div>
+                  </div>
+              </div>
+  
+              <div id="line-container-card">
+                  ${createLineLinks(response.lines_source)}
+              </div>
+          `;
+      }
+      // Count the number of domains
+      const domainsCount = response.domains.length;
+      const domainsCountElement = document.getElementById('domains-count');
+  
+      if (domainsCountElement) {
+          domainsCountElement.innerText = `${domainsCount}`;
+      }
+  }
+  
+  function createLinks(items) {
+      const listItems = items.map(item => `<li><a href="${item}" target="_blank" style="text-decoration: none;">${item}</a></li>`).join('\n');
+      return `<ul style="list-style-type: disc; padding-left: 20px;">${listItems}</ul>`;
+  }
+  
+  function createDomains(items) {
+      const domainItems = items.map(item => `<li>${item.domain}</li>`);
+      return `<ul>${domainItems.join('')}</ul>`;
+  }
+  
+  function createLineLinks(lines) {
+          // Initialize a counter for matching sentences
+          let matchingSentenceCount = 0;
+  
+          // Map the lines to HTML cards, showing only if corresponding text is present
+          const lineHTML = lines.map(line => {
+              const url = line.url;
+              const lineText = line.line_part; // Assuming the property name is line_part
+  
+              // Check if the corresponding text is present
+              if (lineText) {
+                  // Increment the counter if the corresponding sentence is the same
+                  matchingSentenceCount++;
+                  // Generate the card HTML
+                  return `
+                      <div class="card border-0 mb-3">
+                          <div class="card-body" style="width: 100%;">
+                              <p><a href="${url}" target="_blank" style="text-decoration: none; color: inherit;">${lineText}<br>
+                                <i class="bi bi-box-arrow-in-right"></i></a></p>
+                          </div>
+                      </div>
+                  `;
+              } else {
+                  return ''; // If corresponding text is not present, return an empty string
+              }
+          }).join('\n');
+  
+          // Update the matching sentence count in the third column
+          const matchedSentenceCountElement = document.getElementById('char-count');
+          if (matchedSentenceCountElement) {
+              matchedSentenceCountElement.innerText = `${matchingSentenceCount}`;
+          }
+  
+          return lineHTML;
+      }
+ 
+  
+    </script>
+  
+   
+    <script>
+    // Select the textarea element
+    const textarea = document.getElementById("userTextArea");
 
-// Function to update the word count with animation
-function updateWordCount() {
-    // Get the text from the textarea
-    const text = textarea.value.trim();
+    // Select the span element where the word count will be displayed
+    const wordCountSpan = document.getElementById("word-count");
 
-    // Count the number of words (splitting by spaces)
-    const wordCount = text.split(/\s+/).filter(word => word.length > 0).length;
+    // Function to update the word count with animation
+    function updateWordCount() {
+        // Get the text from the textarea
+        const text = textarea.value.trim();
 
-    // Apply animation class to the span element
-    wordCountSpan.classList.remove("animated-number");
-    void wordCountSpan.offsetWidth; // Trigger reflow to restart animation
-    wordCountSpan.classList.add("animated-number");
+        // Count the number of words (splitting by spaces)
+        const wordCount = text.split(/\s+/).filter(word => word.length > 0).length;
 
-    // Update the word count in the span element after a short delay
-    setTimeout(() => {
-        wordCountSpan.textContent = wordCount;
-    }, 1000); // Adjust the delay (in milliseconds) to match the CSS transition duration
-}
+        // Apply animation class to the span element
+        wordCountSpan.classList.remove("animated-number");
+        void wordCountSpan.offsetWidth; // Trigger reflow to restart animation
+        wordCountSpan.classList.add("animated-number");
 
-// Listen for input events on the textarea
-textarea.addEventListener("input", updateWordCount);
+        // Update the word count in the span element after a short delay
+        setTimeout(() => {
+            wordCountSpan.textContent = wordCount;
+        }, 1000); // Adjust the delay (in milliseconds) to match the CSS transition duration
+    }
 
-// Call the function initially to set the word count when the page loads
-updateWordCount();
+    // Listen for input events on the textarea
+    textarea.addEventListener("input", updateWordCount);
+
+    // Call the function initially to set the word count when the page loads
+    updateWordCount();
     </script>
 
+    <script>
+        var btn_bold = document.getElementById('button_bold');
+        var para = document.getElementById('userTextArea');
+        var btn_italics = document.getElementById('button_italics');
+        var btn_underline = document.getElementById('button_underline');
+        var btn_H1=document.getElementById('button_H1');
+        var btn_H2=document.getElementById('button_H2');
+
+        // Event listeners for button clicks
+        btn_bold.addEventListener('click', function() {
+          para.style.fontWeight = 'bold';
+        });
+
+        btn_italics.addEventListener('click', function() {
+          para.style.fontStyle = 'italic';
+        });
+
+        btn_underline.addEventListener('click', function() {
+          para.style.textDecoration = 'underline'; // Use `textDecoration` for underlining
+        });
+
+        btn_H1.addEventListener('click', function() {
+          para.style.fontSize = '24px'; 
+        });
+
+        btn_H2.addEventListener('click', function() {
+          para.style.fontSize = '36px';
+        });
+
+    </script>
+
+    
     <script>
       // Function to capture console.log output and update HTML content
       (function () {
@@ -578,57 +580,132 @@ updateWordCount();
       })();
     </script>
 
+   
     <script>
-var btn_bold = document.getElementById('button_bold');
-var para = document.getElementById('userTextArea');
-var btn_italics = document.getElementById('button_italics');
-var btn_underline = document.getElementById('button_underline');
-var btn_H1=document.getElementById('button_H1');
-var btn_H2=document.getElementById('button_H2');
+        // Select the button element
+        const downloadPdfButton = document.getElementById("downloadPdfButton");
 
-// Event listeners for button clicks
-btn_bold.addEventListener('click', function() {
-  para.style.fontWeight = 'bold';
-});
+        // Function to check if the second and third columns are visible
+        function areColumnsVisible() {
+            const column2 = document.getElementById("column2");
+            const column3 = document.getElementById("column3");
+            return column2.style.display !== "none" && column3.style.display !== "none";
+        }
 
-btn_italics.addEventListener('click', function() {
-  para.style.fontStyle = 'italic';
-});
+        function downloadReportPdf() {
+        // Check if the columns are visible
+        if (!areColumnsVisible()) {
+            // If columns are not visible, return and do not generate PDF
+            alert("Please display the second and third columns to generate the PDF.");
+            return;
+        }
 
-btn_underline.addEventListener('click', function() {
-  para.style.textDecoration = 'underline'; // Use `textDecoration` for underlining
-});
+        // Get the text from the textarea
+        const text = document.getElementById("userTextArea").value.trim();
 
-btn_H1.addEventListener('click', function() {
-  para.style.fontSize = '24px'; // 
-});
+        // Get the plagiarism percentage
+        const plagiarismPercentage = document.getElementById("percentage-text").textContent;
 
-btn_H2.addEventListener('click', function() {
-  para.style.fontSize = '36px'; //
-});
+        // Get the chart canvas
+        const chartCanvas = document.getElementById("myChart");
+
+        // Get the corresponding text container
+        // const correspondingTextContainer = document.getElementById("line-container-card");
+
+        // Create a div element to hold the content
+        const reportContent = document.createElement("div");
+
+        // Append the heading "Plagiarism Report" to the report content
+        const heading = document.createElement("h3");
+        heading.textContent = "Plagiarism Report";
+        heading.style.textAlign = "center";
+        reportContent.appendChild(heading);
+        reportContent.appendChild(document.createElement("br"));
+
+        // Append the text, domains, URLs, percentage, and chart image to the report content
+        reportContent.appendChild(document.createTextNode("Text:"));
+        reportContent.appendChild(document.createElement("br"));
+        const textElement = document.createElement("div");
+        textElement.style.lineHeight = "1.6"; // Adjust line height
+        textElement.style.fontSize = "12px"; // Adjust font size
+        textElement.textContent = text;
+        reportContent.appendChild(textElement);
+        reportContent.appendChild(document.createElement("br"));
+        reportContent.appendChild(document.createElement("br"));
+
+        reportContent.appendChild(document.createTextNode("Domains:"));
+        reportContent.appendChild(document.createElement("br"));
+        reportContent.appendChild(document.getElementById("domains-container-card").cloneNode(true));
+        reportContent.appendChild(document.createElement("br"));
+        reportContent.appendChild(document.createElement("br"));
+
+        reportContent.appendChild(document.createTextNode("URLs:"));
+        reportContent.appendChild(document.createElement("br"));
+        reportContent.appendChild(document.getElementById("urls-container-card").cloneNode(true));
+        reportContent.appendChild(document.createElement("br"));
+        reportContent.appendChild(document.createElement("br"));
+
+        reportContent.appendChild(document.createTextNode("Plagiarism Percentage: " + plagiarismPercentage));
+        reportContent.appendChild(document.createElement("br"));
+        reportContent.appendChild(document.createElement("br"));
+
+        // Append the corresponding text container to the report content with adjusted font settings
+        const correspondingTextContainer = document.getElementById("line-container-card").cloneNode(true);
+        correspondingTextContainer.querySelectorAll('a').forEach(link => {
+            link.style.textDecoration = 'none'; // Remove underline from links
+            link.style.color = 'inherit'; // Inherit text color
+        });
+        correspondingTextContainer.querySelectorAll('p').forEach(paragraph => {
+            paragraph.style.lineHeight = '1.6'; // Adjust line height
+            paragraph.style.fontSize = '12px'; // Adjust font size
+            paragraph.style.fontFamily = 'Arial, sans-serif'; // Set font family to ensure proper rendering
+        });
+        // Convert correspondingTextContainer to an array of list items
+        const correspondingTextList = Array.from(correspondingTextContainer.querySelectorAll('p')).map(paragraph => {
+            const listItem = document.createElement('li');
+            listItem.appendChild(paragraph.cloneNode(true)); // Clone each paragraph and append to the list item
+            return listItem;
+        });
+
+        // Create a list element to hold the corresponding text
+        const correspondingTextListElement = document.createElement('ul');
+        correspondingTextList.forEach(listItem => correspondingTextListElement.appendChild(listItem));
+
+        // Append the list element to the report content
+        reportContent.appendChild(document.createTextNode("Corresponding Text:"));
+        reportContent.appendChild(document.createElement("br"));
+        reportContent.appendChild(correspondingTextListElement);
+        reportContent.appendChild(document.createElement("br"));
+        reportContent.appendChild(document.createElement("br"));
+
+
+        // Append the chart canvas to the report content
+        reportContent.appendChild(chartCanvas.cloneNode(true)); // Clone the canvas
+
+        // Define options for PDF generation
+        const options = {
+            margin: 10,
+            filename: 'report.pdf',
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        // Use html2pdf library to generate PDF
+        html2pdf().from(reportContent).set(options).save();
+    }
+
+        // Add event listener for button click
+        downloadPdfButton.addEventListener("click", downloadReportPdf);
 
     </script>
 
-<!-- <script>
-  function checkTextAreaLimit() {
-    var textarea = document.getElementById("userTextArea");
-    var maxLength = parseInt(textarea.getAttribute("maxlength"));
-    var currentLength = textarea.value.length;
-
-    if (currentLength > maxLength) {
-      alert("Text length exceeds the maximum limit of " + maxLength + " characters.");
-      // Optionally, you can trim the excess characters
-      textarea.value = textarea.value.slice(0, maxLength);
-    }
-  }
-</script>
-   -->
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script> -->
+// <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script> -->
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<!-- <script src="https://cdn.rawgit.com/kottenator/jquery-circle-progress/1.2.2/dist/circle-progress.min.js" integrity="sha384-DvJ4N0fEnWtIc6ofkGFSzTF4E21n6qakpL48pXXJwzQ5t0pav4SN3FmJ0BBerqE9" crossorigin="anonymous"></script> -->
+// <!-- <script src="https://cdn.rawgit.com/kottenator/jquery-circle-progress/1.2.2/dist/circle-progress.min.js" integrity="sha384-DvJ4N0fEnWtIc6ofkGFSzTF4E21n6qakpL48pXXJwzQ5t0pav4SN3FmJ0BBerqE9" crossorigin="anonymous"></script> -->
 
 </body>
 </html>
+

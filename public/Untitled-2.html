@@ -471,16 +471,30 @@
                 const lineText = line.line_part; // Assuming the property name is line_part
 
                 // Check if the corresponding text is present
-                if (lineText) {
+                if (lineText && lineText.trim() !== '') {
+                  // console.log(lineText == ' ');
                     // Increment the counter if the corresponding sentence is the same
                     matchingSentenceCount++;
                     // Generate the card HTML
                     return `
-                        <div class="card border-0 mb-3">
-                            <div class="card-body" style="width: 100%;">
-                                <p>Corresponding Text:<br> <a href="${url}" target="_blank" style="text-decoration: none; color: inherit;">${lineText}</a></p>
-                            </div>
-                        </div>
+
+                    <div class="card border-0 mb-3">
+                      <div class="card-body" style="width: 100%;">
+                          <p style="margin-bottom: 0;">
+                              <button class="source-button" style="background: none; border: none; padding: 0; cursor: pointer;">
+                                  <a href="${url}" target="_blank" style="text-decoration: none; color: inherit;">
+                                      <p>${lineText}</p>
+                                      <br><br>
+                                      <span>Show Source</span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-right arrow-icon" viewBox="0 0 16 16" style="color: inherit; vertical-align: text-bottom;">
+                                          <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"/>
+                                          <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
+                                      </svg>
+                                  </a>
+                              </button>
+                          </p>
+                      </div>
+                  </div>
                     `;
                 } else {
                     return ''; // If corresponding text is not present, return an empty string

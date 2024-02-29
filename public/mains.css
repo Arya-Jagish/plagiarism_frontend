@@ -6,6 +6,7 @@ body {
     /* overflow: hidden; */
     background-color: #ccc;
     /* overflow: hidden;  */
+    max-height: 200px; /* Set your desired fixed height here */
 }
 
 @media screen and (max-width: 768px) {
@@ -62,7 +63,7 @@ body {
 
 .card:hover {
     transform: translateY(-5px); /* Move the card slightly up on hover */
-    box-shadow: 0 8px 16px #575656;; /* Add a shadow on hover */
+    box-shadow: 0 8px 16px #6bacec;; /* Add a shadow on hover */
 }
 .column3{
     flex: 1;
@@ -179,7 +180,7 @@ textarea::-webkit-scrollbar {
     justify-content: center;
     color: #333;
     padding-top: 5px;
-    box-shadow: 2px 2px #626263;
+    box-shadow: 2px 2px #626363;
     
 }
 .first card.card{
@@ -382,3 +383,39 @@ input {
   .container__mark {
     background-color: yellow;
   }
+
+  .source-button:hover {
+    color: #007bff;
+}
+/* Hide scrollbar for Chrome, Safari and Opera */
+.card-body::-webkit-scrollbar {
+    display: none;
+}
+
+.card-body {
+    max-height: 200px; /* Set your desired fixed height here */
+    overflow-y: auto;
+}
+.show-more-btn{
+    
+}
+/* .show-more-btn span{
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+.show-more-btn:Show More span {
+    padding-right: 25px;
+  }
+  .show-more-btn:Show More span:after {
+    opacity: 1;
+    right: 0;
+  } */
+
+  table, th, td {
+    border:1px solid black;
+    width:100%
+  }
+
+
